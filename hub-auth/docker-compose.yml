@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  hub-auth-db:
+    image: postgres:14.3-alpine
+    container_name: hub-auth-db
+    ports:
+      - "6431:5432"
+    environment:
+      POSTGRES_USER: auth
+      POSTGRES_PASSWORD: auth
+      POSTGRES_DB: myc_auth
+
+  auth:
+    image: "mycesys/hub-auth:${IMAGE_VERSION}"
+    container_name: hub-auth
+    ports:
+      - "8098:8098"
+    environment:
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - OAUTH_ISSUER_URL=${OAUTH_ISSUER_URL}
+      - WEB_APP_REDIRECT_URL=${WEB_APP_REDIRECT_URL}
+      - FRONTEND_BASE_URL=${FRONTEND_BASE_URL}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+
+    depends_on:
+      - hub-auth-db

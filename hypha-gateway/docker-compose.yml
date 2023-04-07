@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  hypha-gateway:
+    image: "mycesys/hypha-gateway:${IMAGE_VERSION}"
+    container_name: hypha-gateway
+    ports:
+      - "8091:8091"
+    environment:
+      - OAUTH_ISSUER_URL=${OAUTH_ISSUER_URL}
+      - SERVICE_CORE_URL=${SERVICE_CORE_URL}
+      - SERVICE_FILES_URL=${SERVICE_FILES_URL}
+      - SERVICE_BFF_URL=${SERVICE_BFF_URL}

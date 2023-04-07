@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  hypha-tasks-db:
+    image: postgres:14.3-alpine
+    container_name: hypha-tasks-db
+    ports:
+      - "6464:5432"
+    environment:
+      POSTGRES_USER: tm
+      POSTGRES_PASSWORD: tm
+      POSTGRES_DB: myc_hypha_tm
+
+  hypha-tasks:
+    image: "mycesys/hypha-tasks:${IMAGE_VERSION}"
+    container_name: hypha-tasks
+    ports:
+      - "8095:8095"
+    environment:
+      - SPRING_R2DBC_URL=${SPRING_R2DBC_URL}
+      - SPRING_LIQUIBASE_URL=${SPRING_LIQUIBASE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_RABBITMQ_HOST=${SPRING_RABBITMQ_HOST}
+      - SPRING_RABBITMQ_PORT=${SPRING_RABBITMQ_PORT}
+      - SPRING_RABBITMQ_USERNAME=${SPRING_RABBITMQ_USERNAME}
+      - SPRING_RABBITMQ_PASSWORD=${SPRING_RABBITMQ_PASSWORD}
+      - SERVICE_FILES_URL=${SERVICE_FILES_URL}
+      - SERVICE_RESOURCE_URL=${SERVICE_RESOURCE_URL}
+    depends_on:
+      - hypha-tasks-db

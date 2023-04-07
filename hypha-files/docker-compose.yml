@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  hypha-files-db:
+    image: postgres:14.3-alpine
+    container_name: hypha-files-db
+    ports:
+      - "6432:5432"
+    environment:
+      POSTGRES_USER: fm
+      POSTGRES_PASSWORD: fm
+      POSTGRES_DB: myc_hypha_fm
+
+  hypha-files:
+    image: "mycesys/hypha-files:${IMAGE_VERSION}"
+    container_name: hypha-files
+    ports:
+      - "8097:8097"
+    environment:
+      - SPRING_R2DBC_URL=${SPRING_R2DBC_URL}
+      - SPRING_LIQUIBASE_URL=${SPRING_LIQUIBASE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - STORAGE_LOCAL_PATH=${STORAGE_LOCAL_PATH}
+    depends_on:
+      - hypha-files-db

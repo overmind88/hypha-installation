@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  hypha-workflow-db:
+    image: postgres:14.3-alpine
+    container_name: hypha-workflow-db
+    ports:
+      - "6433:5432"
+    environment:
+      POSTGRES_USER: workflow
+      POSTGRES_PASSWORD: workflow
+      POSTGRES_DB: myc_hypha_workflow
+
+  hypha-workflow:
+    image: "mycesys/hypha-workflow:${IMAGE_VERSION}"
+    container_name: hypha-workflow
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_R2DBC_URL=${SPRING_R2DBC_URL}
+      - SPRING_LIQUIBASE_URL=${SPRING_LIQUIBASE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SERVICE_FILES_URL=${SERVICE_FILES_URL}
+      - SERVICE_CORE_URL=${SERVICE_CORE_URL}
+    depends_on:
+      - hypha-workflow-db

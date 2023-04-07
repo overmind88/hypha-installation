@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  hypha-dashboard-db:
+    image: postgres:14.3-alpine
+    container_name: hypha-dashboard-db
+    ports:
+      - "6435:5432"
+    environment:
+      POSTGRES_USER: dashboard
+      POSTGRES_PASSWORD: dashboard
+      POSTGRES_DB: myc_hypha_dashboard
+
+  hypha-dashboard:
+    image: "mycesys/hypha-dashboard:${IMAGE_VERSION}"
+    container_name: hypha-dashboard
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_R2DBC_URL=${SPRING_R2DBC_URL}
+      - SPRING_LIQUIBASE_URL=${SPRING_LIQUIBASE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+    depends_on:
+      - hypha-dashboard-db

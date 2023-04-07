@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  hypha-core-db:
+    image: postgres:14.3-alpine
+    container_name: hypha-core-db
+    ports:
+      - "6433:5432"
+    environment:
+      POSTGRES_USER: core
+      POSTGRES_PASSWORD: core
+      POSTGRES_DB: myc_hypha_core
+
+  hypha-core:
+    image: "mycesys/hypha-core:${IMAGE_VERSION}"
+    container_name: hypha-core
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_R2DBC_URL=${SPRING_R2DBC_URL}
+      - SPRING_LIQUIBASE_URL=${SPRING_LIQUIBASE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - AVATAR_ROOT_DIR=${AVATAR_ROOT_DIR}
+      - SERVICE_FILES_URL=${SERVICE_FILES_URL}
+    depends_on:
+      - hypha-core-db
