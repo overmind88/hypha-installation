@@ -1,7 +1,7 @@
 ## 1. About
 
 #### 1.1. Hypha is a SPDM system that allows to manage data and simulations, run computational tasks and process the results
-#### 1.2. User guide could be found here<place link for the guide>
+#### 1.2. User guide could be found here: [Hypha & Hub User Guide](https://mycesys.com/hypha/2023.1/userguide.pdf)
 #### 1.3. This document describes the complete guide to install desired version of Hypha
 
 ## 2. Prerequisites
