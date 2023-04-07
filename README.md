@@ -128,7 +128,7 @@
   - NOTE: all data stored only inside docker container will be lost after restart
 - Ports
   - Each container configuration has `ports:` section
-  - NOTE: If you make changes to ports mapping do not forgot to make corresponding changes in nginx configuration (`7.8`, `8.9`)
+  - NOTE: If you make changes to ports mapping don't forget to make corresponding changes in nginx configuration (`7.8`, `8.9`)
 
 #### 7.5. Nginx configuration
 
@@ -204,7 +204,7 @@
   - NOTE: all data stored only inside docker container will be lost after restart
 - Ports
   - Each container configuration has `ports:` section
-  - NOTE: If you make changes to ports mapping do not forgot to make corresponding changes in nginx configuration (`7.8`, `8.9`)
+  - NOTE: If you make changes to ports mapping don't forget to make corresponding changes in nginx configuration (`7.8`, `8.9`)
 	
 #### 8.8. Nginx configuration for Hypha
 
