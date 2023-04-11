@@ -6,6 +6,8 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - ./rabbitmq_data:/var/lib/rabbitmq/mnesia/
     ports:
       # AMQP protocol port
       - '5672:5672'
@@ -287,8 +289,8 @@ services:
 #      - '443:443'
     volumes:
       - ${PWD}/nginx.hypha_frontend.example.conf:/etc/nginx/conf.d/hypha.conf
-      #- /etc/letsencrypt:/etc/letsencrypt
-      - ${PWD}/certs:/etc/certs
+      #- /etc/letsencrypt:/etc/certs
+      - ${PWD}/ssl:/etc/ssl
     restart: always
 
   hub-ui:
@@ -299,7 +301,7 @@ services:
 #      - '22443:443'
     volumes:
       - ${PWD}/nginx.hub_frontend.example.conf:/etc/nginx/conf.d/hub.conf
-      #- /etc/letsencrypt:/etc/letsencrypt
-      - ${PWD}/certs:/etc/certs
+      #- /etc/letsencrypt:/etc/certs
+      - ${PWD}/ssl:/etc/ssl
     restart: always
 

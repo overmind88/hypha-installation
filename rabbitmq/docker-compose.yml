@@ -6,6 +6,8 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - ./rabbitmq_data:/var/lib/rabbitmq/mnesia/
     ports:
       # AMQP protocol port
       - '5672:5672'

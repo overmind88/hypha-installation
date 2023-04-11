@@ -3,6 +3,7 @@ mkdir -p core/common/avatars/
 mkdir -p files/data/
 mkdir -p oauth/keys/
 mkdir -p ssh/keys/
+mkdir -p ssl
 mkdir -p pg_auth
 mkdir -p pg_core
 mkdir -p pg_dashboard
@@ -10,3 +11,4 @@ mkdir -p pg_fm
 mkdir -p pg_rm
 mkdir -p pg_tm
 mkdir -p pg_workflow
+mkdir -p rabbitmq_data
