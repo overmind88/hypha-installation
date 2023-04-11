@@ -24,19 +24,20 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 #### Hardware
 
 - Minimal
+
 | Node | CPU | RAM | Disk |
 | -------- | ------ | ------- | ------ |
 | All in one + Hub | 8 | 24 | 512 Gb |
+
 - Optimal
-  - Hypha
+
 | Node | CPU | RAM | Disk |
 | -------- | ------ | ------- | ------ |
 | All in one | 16 | 64 | 512 Gb |
-  - Hub
-| Node | CPU | RAM | Disk |
-| -------- | ------ | ------- | ------ |
-| Auth | 4 | 6 | 60 Gb |
+| Hub | 4 | 6 | 60 Gb |
+
 - Enterprise
+
 | Node | CPU | RAM | Disk |
 | -------- | ------ | ------- | ------ |
 | Hub | 4 | 16 | 60 Gb |
@@ -86,6 +87,7 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 
 - Run `./prepare-dirs.sh`
 - Following directories will be created
+
 | Path | Description | 
 | ------ | ----------------- |
 | `auth/user/avatars/` | place where avatars for all users are stored |
@@ -113,12 +115,14 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 	- To generate this keys run `./generate-ssh-keys.sh`
 - SSL
 	- Place SSL certificate files into `./ssl` dir
-	| File | Description | 
+
+  | File | Description | 
   | ------ | ----------------- |
   | `ssl-dhparams.pem` | Diffie-Hellman group |
   | `fullchain.pem` |SSL certificate |
   | `privkey.pem` | SSL private key |
   | `options-ssl-nginx.conf` | SSL configuration file (decribed below) |
+	
 	- `options-ssl-nginx.conf` - snippet of nginx parameters for SSL. In minimal configuration you can use these values:
 
 ```
@@ -139,6 +143,7 @@ ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECD
 - Copy sample env file to `.env` : `cp ./dot.env.example ./.env`
 - Required changes in `.env`
   - Redirect URLs
+
   | Key=Value | Description | 
   | ------ | ----------------- |
   | `OAUTH_ISSUER_URL`=https://localhost:3001 | place here public address of your Hub instance (example: https://hub.yourdomain.com:3001) |
@@ -146,15 +151,17 @@ ssl_ciphers "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECD
   | `HUB_WEB_APP_BASE_URL`=https://localhost:3001 | place here public address of your Hub instance (example: https://hypha.yourdomain.com:3001) |
   | `HYPHA_WEB_APP_BASE_URL`=https://localhost | place here public address of your Hypha frontend (example: https://hypha.yourdomain.com) | 
   | `WEB_APP_REDIRECT_URL`=https://localhost/oauth/callback | place here public address of your Hypha frontend (keep oauth/callback in place) |
+  
   - Secrets
+  
   | Key=Value | Description | 
   | ------ | ----------------- |
   | `ADMIN_PASSWORD`=root  | default password for first user |
-  | `SSH_DEFAULT_KEY_PATH`=/ssh/keys/hypha | 
   | `AUTH_SECRET`=xxxxxx  | strong password (randomly generated) with length no less than 32 characters | 
   | `HYPHA_SECRET`=xxxxxx | strong password (randomly generated) with length no less than 32 characters |
-	| `RABBITMQ_DEFAULT_USER`=guest | set default user for RabbitMQ |
-  | `RABBITMQ_DEFAULT_PASS`=guest | Set default pass for default RabbitMQ user |
+  | `RABBITMQ_DEFAULT_USER`=guest | default user for RabbitMQ |
+  | `RABBITMQ_DEFAULT_PASS`=guest | default pass for default RabbitMQ user |
+
   - All other changes in `.env` are optional for allinone setup
 
 #### Run Hypha & Hub
