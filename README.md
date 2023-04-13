@@ -184,9 +184,9 @@ You can obtain SSL certificate for your DNS record or IP address and use it to s
 
 - All actions should be performed in `allinone` directory
 - Copy `selfsigned/v3.ext` and `selfsigned/ssl.cnf` to `ssl/`
-	- `cp selfsigned/ssl.cnf ssl/` - Contains basic SSL paramaters
+	- `cp selfsigned/ssl.cfg ssl/` - Contains basic SSL paramaters
   - `cp selfsigned/v3.ext ssl/` - Contains SAN parametes
-- Fill `ssl/ssl.cnf` with your server parameters
+- Fill `ssl/ssl.cfg` with your server parameters
 	- `C = US` - country code 
 	- `ST = State` - state
 	- `L = City` - your city
@@ -206,7 +206,7 @@ You can obtain SSL certificate for your DNS record or IP address and use it to s
   - run `exit`
   - run `docker exec -it hypha-gateway /bin/bash`
   - run `cd /ssl`
-  - run `keytool -importkeystore -srckeystore ./store.p12 -srcstoretype PKCS12 -srcstorepass mycesys -destkeystore $JAVA_HOME/lib/security/cacerts -deststoretype JKS -deststorepass changeit` (set correct `-srcstorepass` if you change it in `generate-ssl-keys.sh`)
+  - run `keytool -importkeystore -srckeystore ./identity.p12 -srcstoretype PKCS12 -srcstorepass mycesys -destkeystore $JAVA_HOME/lib/security/cacerts -deststoretype JKS -deststorepass changeit` (set correct `-srcstorepass` if you change it in `generate-ssl-keys.sh`)
   - run `exit`
   - run `docker restart hub-auth hypha-gateway`
 

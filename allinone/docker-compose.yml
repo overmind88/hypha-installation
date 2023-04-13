@@ -26,7 +26,7 @@ services:
     volumes:
       - ./pg_core/data:/var/lib/postgresql/data
   hypha-core:
-    image: "mycesys/hypha-core:${HYPHA-CORE_VERSION}"
+    image: "mycesys/hypha-core:${HYPHA_CORE_VERSION}"
     container_name: hypha-core
     ports:
       - "8081:8081"
@@ -60,7 +60,7 @@ services:
     volumes:
       - ./pg_fm/data:/var/lib/postgresql/data
   hypha-files:
-    image: "mycesys/hypha-files:${HYPHA-FILES_VERSION}"
+    image: "mycesys/hypha-files:${HYPHA_FILES_VERSION}"
     container_name: hypha-files
     ports:
       - "8097:8097"
@@ -83,7 +83,7 @@ services:
     depends_on:
       - hypha-files-db
   hypha-gateway:
-    image: "mycesys/hypha-gateway:${HYPHA-GATEWAY_VERSION}"
+    image: "mycesys/hypha-gateway:${HYPHA_GATEWAY_VERSION}"
     container_name: hypha-gateway
     ports:
       - "8091:8091"
@@ -112,7 +112,7 @@ services:
     volumes:
       - ./pg_auth/data:/var/lib/postgresql/data
   hub-auth:
-    image: "mycesys/hub-auth:${HUB-AUTH_VERSION}"
+    image: "mycesys/hub-auth:${HUB_AUTH_VERSION}"
     container_name: hub-auth
     ports:
       - "8098:8098"
@@ -139,7 +139,7 @@ services:
     depends_on:
       - hub-auth-db
   hypha-bff:
-    image: "mycesys/hypha-bff:${HYPHA-BFF_VERSION}"
+    image: "mycesys/hypha-bff:${HYPHA_BFF_VERSION}"
     container_name: hypha-bff
     ports:
       - "8100:8100"
@@ -169,7 +169,7 @@ services:
     volumes:
       - ./pg_workflow/data:/var/lib/postgresql/data
   hypha-workflow:
-    image: "mycesys/hypha-workflow:${HYPHA-WORKFLOW_VERSION}"
+    image: "mycesys/hypha-workflow:${HYPHA_WORKFLOW_VERSION}"
     container_name: hypha-workflow
     ports:
       - "8082:8082"
@@ -204,7 +204,7 @@ services:
     volumes:
       - ./pg_rm/data:/var/lib/postgresql/data
   hypha-resources:
-    image: "mycesys/hypha-resources:${HYPHA-RESOURCES_VERSION}"
+    image: "mycesys/hypha-resources:${HYPHA_RESOURCES_VERSION}"
     container_name: hypha-resources
     ports:
       - "8096:8096"
@@ -238,7 +238,7 @@ services:
     volumes:
       - ./pg_tm/data:/var/lib/postgresql/data
   hypha-tasks:
-    image: "mycesys/hypha-tasks:${HYPHA-TASKS_VERSION}"
+    image: "mycesys/hypha-tasks:${HYPHA_TASKS_VERSION}"
     container_name: hypha-tasks
     ports:
       - "8095:8095"
@@ -270,7 +270,7 @@ services:
       - ./pg_dashboard/data:/var/lib/postgresql/data
 
   hypha-dashboard:
-    image: "mycesys/hypha-dashboard:${HYPHA-DASHBOARD_VERSION}"
+    image: "mycesys/hypha-dashboard:${HYPHA_DASHBOARD_VERSION}"
     container_name: hypha-dashboard
     ports:
       - "8083:8083"
@@ -286,7 +286,7 @@ services:
 
   hypha-ui:
     container_name: hypha-ui
-    image: "mycesys/hypha-ui:${HYPHA-UI_VERSION}"
+    image: "mycesys/hypha-ui:${HYPHA_UI_VERSION}"
     ports:
       - '${HYPHA_PUBLIC_PORT}:8300'
     volumes:
@@ -296,7 +296,7 @@ services:
 
   hub-ui:
     container_name: hub-ui
-    image: "mycesys/hub-ui:${HUB-UI_VERSION}"
+    image: "mycesys/hub-ui:${HUB_UI_VERSION}"
     ports:
       - '${HUB_PUBLIC_PORT}:8301'
     volumes:
