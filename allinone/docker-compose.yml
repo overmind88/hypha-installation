@@ -26,15 +26,15 @@ services:
     volumes:
       - ./pg_core/data:/var/lib/postgresql/data
   hypha-core:
-    image: "mycesys/hypha-core:${CORE_VERSION}"
+    image: "mycesys/hypha-core:${HYPHA-CORE_VERSION}"
     container_name: hypha-core
     ports:
       - "8081:8081"
     volumes:
       - ./core/common/avatars:/server/data/avatars
     environment:
-      - SPRING_R2DBC_URL=r2dbc:postgresql://core-db:5432/coredb
-      - SPRING_LIQUIBASE_URL=jdbc:postgresql://core-db:5432/coredb
+      - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-core-db:5432/coredb
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-core-db:5432/coredb
       - SPRING_DATASOURCE_USERNAME=core
       - SPRING_DATASOURCE_PASSWORD=core
       - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
@@ -60,7 +60,7 @@ services:
     volumes:
       - ./pg_fm/data:/var/lib/postgresql/data
   hypha-files:
-    image: "mycesys/hypha-files:${FILE_MANAGER_VERSION}"
+    image: "mycesys/hypha-files:${HYPHA-FILES_VERSION}"
     container_name: hypha-files
     ports:
       - "8097:8097"
@@ -68,8 +68,8 @@ services:
       - ./files/data:/server/data
       - ./ssh/keys:/ssh/keys
     environment:
-      - SPRING_R2DBC_URL=r2dbc:postgresql://file-manager-db:5432/fmdb
-      - SPRING_LIQUIBASE_URL=jdbc:postgresql://file-manager-db:5432/fmdb
+      - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-files-db:5432/fmdb
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-files-db:5432/fmdb
       - SPRING_DATASOURCE_USERNAME=fm
       - SPRING_DATASOURCE_PASSWORD=fm
       - STORAGE_LOCAL_PATH=/server/data
@@ -83,7 +83,7 @@ services:
     depends_on:
       - hypha-files-db
   hypha-gateway:
-    image: "mycesys/hypha-gateway:${APP_GATEWAY_VERSION}"
+    image: "mycesys/hypha-gateway:${HYPHA-GATEWAY_VERSION}"
     container_name: hypha-gateway
     ports:
       - "8091:8091"
@@ -98,6 +98,8 @@ services:
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
       - HYPHA_SECRET=${HYPHA_SECRET}
       - AUTH_SECRET=${AUTH_SECRET}
+    volumes:
+      - ./ssl:/ssl
   hub-auth-db:
     image: postgres:14.3-alpine
     container_name: hub-auth-db
@@ -110,15 +112,16 @@ services:
     volumes:
       - ./pg_auth/data:/var/lib/postgresql/data
   hub-auth:
-    image: "mycesys/hub-auth:${AUTH_VERSION}"
+    image: "mycesys/hub-auth:${HUB-AUTH_VERSION}"
     container_name: hub-auth
     ports:
       - "8098:8098"
     volumes:
       - ./oauth/keys:/oauth/keys
+      - ./ssl:/ssl
       - ./auth/user/avatars:/server/data/avatars
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://auth-db:5432/authdb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://hub-auth-db:5432/authdb
       - SPRING_DATASOURCE_USERNAME=auth
       - SPRING_DATASOURCE_PASSWORD=auth
       - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
@@ -136,7 +139,7 @@ services:
     depends_on:
       - hub-auth-db
   hypha-bff:
-    image: "mycesys/hypha-bff:${BFF_VERSION}"
+    image: "mycesys/hypha-bff:${HYPHA-BFF_VERSION}"
     container_name: hypha-bff
     ports:
       - "8100:8100"
@@ -166,13 +169,13 @@ services:
     volumes:
       - ./pg_workflow/data:/var/lib/postgresql/data
   hypha-workflow:
-    image: "mycesys/hypha-workflow:${WORKFLOW_MANAGER_VERSION}"
+    image: "mycesys/hypha-workflow:${HYPHA-WORKFLOW_VERSION}"
     container_name: hypha-workflow
     ports:
       - "8082:8082"
     environment:
-      - SPRING_R2DBC_URL=r2dbc:postgresql://workflow-db:5432/myc_hypha_workflow
-      - SPRING_LIQUIBASE_URL=jdbc:postgresql://workflow-db:5432/myc_hypha_workflow
+      - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-workflow-db:5432/myc_hypha_workflow
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-workflow-db:5432/myc_hypha_workflow
       - SPRING_DATASOURCE_USERNAME=workflow
       - SPRING_DATASOURCE_PASSWORD=workflow
       - SERVICE_CORE_URL=${SERVICE_CORE_URL}
@@ -201,15 +204,15 @@ services:
     volumes:
       - ./pg_rm/data:/var/lib/postgresql/data
   hypha-resources:
-    image: "mycesys/hypha-resources:${RESOURCE_MANAGER_VERSION}"
+    image: "mycesys/hypha-resources:${HYPHA-RESOURCES_VERSION}"
     container_name: hypha-resources
     ports:
       - "8096:8096"
     volumes:
       - ./ssh/keys:/ssh/keys
     environment:
-      - SPRING_R2DBC_URL=r2dbc:postgresql://resource-manager-db:5432/myc_hypha_rm
-      - SPRING_LIQUIBASE_URL=jdbc:postgresql://resource-manager-db:5432/myc_hypha_rm
+      - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-resources-db:5432/myc_hypha_rm
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-resources-db:5432/myc_hypha_rm
       - SPRING_DATASOURCE_USERNAME=rm
       - SPRING_DATASOURCE_PASSWORD=rm
       - SERVICE_CORE_URL=${SERVICE_CORE_URL}
@@ -235,13 +238,13 @@ services:
     volumes:
       - ./pg_tm/data:/var/lib/postgresql/data
   hypha-tasks:
-    image: "mycesys/hypha-tasks:${TASK_MANAGER_VERSION}"
+    image: "mycesys/hypha-tasks:${HYPHA-TASKS_VERSION}"
     container_name: hypha-tasks
     ports:
       - "8095:8095"
     environment:
-      - SPRING_R2DBC_URL=r2dbc:postgresql://task-manager-db:5432/myc_hypha_tm
-      - SPRING_LIQUIBASE_URL=jdbc:postgresql://task-manager-db:5432/myc_hypha_tm
+      - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-tasks-db:5432/myc_hypha_tm
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-tasks-db:5432/myc_hypha_tm
       - SPRING_DATASOURCE_USERNAME=tm
       - SPRING_DATASOURCE_PASSWORD=tm
       - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
@@ -267,13 +270,13 @@ services:
       - ./pg_dashboard/data:/var/lib/postgresql/data
 
   hypha-dashboard:
-    image: "mycesys/hypha-dashboard:${DASHBOARD_VERSION}"
+    image: "mycesys/hypha-dashboard:${HYPHA-DASHBOARD_VERSION}"
     container_name: hypha-dashboard
     ports:
       - "8083:8083"
     environment:
-      - SPRING_R2DBC_URL=r2dbc:postgresql://dashboard-db:5432/myc_hypha_dashboard
-      - SPRING_LIQUIBASE_URL=jdbc:postgresql://dashboard-db:5432/myc_hypha_dashboard
+      - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-dashboard-db:5432/myc_hypha_dashboard
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-dashboard-db:5432/myc_hypha_dashboard
       - SPRING_DATASOURCE_USERNAME=dashboard
       - SPRING_DATASOURCE_PASSWORD=dashboard
       - HYPHA_SECRET=${HYPHA_SECRET}
@@ -283,25 +286,20 @@ services:
 
   hypha-ui:
     container_name: hypha-ui
-    image: "mycesys/hypha-ui:${HYPHA_FRONTEND_VERSION}"
+    image: "mycesys/hypha-ui:${HYPHA-UI_VERSION}"
     ports:
-      - '3000:3000'
-#      - '443:443'
+      - '${HYPHA_PUBLIC_PORT}:8300'
     volumes:
-      - ${PWD}/nginx.hypha_frontend.example.conf:/etc/nginx/conf.d/hypha.conf
-      #- /etc/letsencrypt:/etc/certs
-      - ${PWD}/ssl:/etc/ssl
+      - ./nginx.hypha_frontend.example.conf:/etc/nginx/conf.d/hypha.conf
+      - ./ssl:/etc/ssl
     restart: always
 
   hub-ui:
     container_name: hub-ui
-    image: "mycesys/hub-ui:${HUB_FRONTEND_VERSION}"
+    image: "mycesys/hub-ui:${HUB-UI_VERSION}"
     ports:
-      - '3001:3001'
-#      - '22443:443'
+      - '${HUB_PUBLIC_PORT}:8301'
     volumes:
-      - ${PWD}/nginx.hub_frontend.example.conf:/etc/nginx/conf.d/hub.conf
-      #- /etc/letsencrypt:/etc/certs
-      - ${PWD}/ssl:/etc/ssl
+      - ./nginx.hub_frontend.example.conf:/etc/nginx/conf.d/hub.conf
+      - ./ssl:/etc/ssl
     restart: always
-

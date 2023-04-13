@@ -1,0 +1,6 @@
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid:always,issuer:always
+basicConstraints       = CA:FALSE
+keyUsage               = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement, keyCertSign
+subjectAltName         = IP:<IP_ADDR_HERE>,DNS:<DNS_RECORD_HERE>
+issuerAltName          = issuer:copy
