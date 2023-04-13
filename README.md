@@ -13,15 +13,15 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 
 ### Table of content
 
-1. Requirements
-2. Configuration
- - Architecture
- - Configuration
- - Run Hypha & Hub
-3. Advanced guide
--  Generate and use self-signed SSL certificate
--  Install Hypha on several nodes
-4. Troubleshooting
+1. [Requirements](#1-requrements)
+2. [Installation](#2-installation-all-in-one)
+ - [Architecture](#architecture)
+ - [Configuration](#configuration)
+ - [Run Hypha & Hub](#run-hypha--hub)
+3. [Advanced guide](#3-advanced-guide)
+-  [Generate and use self-signed SSL certificate](#generate-and-use-self-signed-ssl-certificate)
+-  [Install Hypha on several nodes](#install-hypha-on-several-nodes)
+4. [Troubleshooting](#4-troubleshooting)
 
 ### 1. Requrements
 
@@ -128,7 +128,7 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
   | `options-ssl-nginx.conf` | SSL configuration file (decribed below) |
  
    - `options-ssl-nginx.conf` could be found in `selfsigned/` (if you don't have one from SSL certificate provider)
-  - To generate self-signed SSL certificate follow the instructions at chapter `3. Advanced guide` of this guide
+  - To generate self-signed SSL certificate follow the instructions at chapter [3. Advanced guide: generate SSL certificate](#generate-and-use-self-signed-ssl-certificate)
 
 ##### Configure `.env` file
 
@@ -164,6 +164,7 @@ In the `allinone` direcotry run:
 
 - `docker-compose pull`
 - `docker-compose up -d` (`-d` to run in daemon mode)
+- If you are using self-signed certificate, remember to perform additional steps described in [3. Advanced guide: addtional configuration steps](#additional-steps)
 
 ### 3. Advanced guide
 
@@ -180,7 +181,7 @@ You can obtain SSL certificate for your DNS record or IP address and use it to s
 - Browser will ask for confirmation
 - Additional steps in installation process required
 
-**How to obtain the certificate:**
+##### How to obtain the certificate
 
 - All actions should be performed in `allinone` directory
 - Copy `selfsigned/v3.ext` and `selfsigned/ssl.cnf` to `ssl/`
@@ -196,9 +197,11 @@ You can obtain SSL certificate for your DNS record or IP address and use it to s
 - Fill `ssl/v3.ext` with your server parameters
   - `subjectAltName = IP:value,DNS:value` - place comma separated pairs `IP:<ip address>` or `DNS:<DNS name>` corresponding to your server
 - Run `./generate-ssl-keys.sh` - process might take some time to generate keys
-- Now you have self signed certificate for 10 years with SAN block
+- Now you have self signed certificate for 10 years with SAN block. [Return to configuration](#configure-env-file)
 
-**Additional steps required after running all containers. Add certificate to `hub-auth` and `hypha-gateway` JKS keystores in JDK**
+##### Additional steps
+
+**After running all containers add certificate to `hub-auth` and `hypha-gateway` JKS keystores in JDK**
 
   - run `docker exec -it hub-auth /bin/bash`
   - run `cd /ssl`
