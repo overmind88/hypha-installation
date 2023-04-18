@@ -144,15 +144,14 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
   |`FRONTEND_BASE_URL=https://<HUB_DOMAIN>:${HUB_PUBLIC_PORT}` | place here public address of your Hub instance |
   | `HUB_WEB_APP_BASE_URL=https://<HUB_DOMAIN>:${HUB_PUBLIC_PORT}` | place here public address of your Hub instance |
   | `HYPHA_WEB_APP_BASE_URL=https://<HYPHA_DOMAIN>:${HYPHA_PUBLIC_PORT}` | place here public address of your Hypha frontend |
-  | `WEB_APP_REDIRECT_URL=https://<HYPHA_DOMAIN>:${HYPHA_PUBLIC_PORT}/oauth/callback` | place here public address of your Hypha frontend (keep `oauth/callback` in place) |
 	
   - Secrets
 
-  | Key=Value | Description |
+  | Key=Value                 | Description |
   | ------ | ----------------- |
-  | `ADMIN_PASSWORD`=root  | default password for firsts user: `admin@mycesys.com` |
-  | `AUTH_SECRET`=xxxxxx  | strong password (randomly generated) with length no less than 32 characters |
-  | `HYPHA_SECRET`=xxxxxx | strong password (randomly generated) with length no less than 32 characters |
+  | `HUB_ADMIN_PASSWORD`=root | default password for firsts user: `admin@mycesys.com` |
+  | `HUB_AUTH_SECRET`=xxxxxx     | strong password (randomly generated) with length no less than 32 characters |
+  | `HYPHA_SECRET`=xxxxxx     | strong password (randomly generated) with length no less than 32 characters |
 
   - All other changes in `.env` are optional for allinone setup
 
