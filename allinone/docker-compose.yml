@@ -20,8 +20,8 @@ services:
     ports:
       - "6433:5432"
     environment:
-      POSTGRES_USER: core
-      POSTGRES_PASSWORD: core
+      POSTGRES_USER: ${HYPHA_CORE_DB_USERNAME}
+      POSTGRES_PASSWORD: ${HYPHA_CORE_DB_PASSWORD}
       POSTGRES_DB: coredb
     volumes:
       - ./pg_core/data:/var/lib/postgresql/data
@@ -35,8 +35,8 @@ services:
     environment:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-core-db:5432/coredb
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-core-db:5432/coredb
-      - SPRING_DATASOURCE_USERNAME=core
-      - SPRING_DATASOURCE_PASSWORD=core
+      - SPRING_DATASOURCE_USERNAME=${HYPHA_CORE_DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${HYPHA_CORE_DB_PASSWORD}
       - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
       - SPRING_RABBITMQ_PORT=${RABBITMQ_PORT}
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
@@ -45,7 +45,7 @@ services:
       - SERVICE_FILES_URL=${SERVICE_FILES_URL}
       - SERVICE_WORKFLOW_URL=${SERVICE_WORKFLOW_URL}
       - HYPHA_SECRET=${HYPHA_SECRET}
-      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       - hypha-core-db
   hypha-files-db:
@@ -54,8 +54,8 @@ services:
     ports:
       - "6632:5432"
     environment:
-      POSTGRES_USER: fm
-      POSTGRES_PASSWORD: fm
+      POSTGRES_USER: ${HYPHA_FILES_MANAGER_DB_USERNAME}
+      POSTGRES_PASSWORD: ${HYPHA_FILES_MANAGER_DB_PASSWORD}
       POSTGRES_DB: fmdb
     volumes:
       - ./pg_fm/data:/var/lib/postgresql/data
@@ -70,16 +70,16 @@ services:
     environment:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-files-db:5432/fmdb
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-files-db:5432/fmdb
-      - SPRING_DATASOURCE_USERNAME=fm
-      - SPRING_DATASOURCE_PASSWORD=fm
+      - SPRING_DATASOURCE_USERNAME=${HYPHA_FILES_MANAGER_DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${HYPHA_FILES_MANAGER_DB_PASSWORD}
       - STORAGE_LOCAL_PATH=/server/data
-      - SSH_DEFAULT_KEY_PATH=${SSH_DEFAULT_KEY_PATH}
+      - SSH_DEFAULT_KEY_PATH=/ssh/keys/hypha
       - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
       - SPRING_RABBITMQ_PORT=${RABBITMQ_PORT}
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
       - HYPHA_SECRET=${HYPHA_SECRET}
-      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       - hypha-files-db
   hypha-gateway:
@@ -97,7 +97,7 @@ services:
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
       - HYPHA_SECRET=${HYPHA_SECRET}
-      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_SECRET=${HUB_AUTH_SECRET}
     volumes:
       - ./ssl:/ssl
   hub-auth-db:
@@ -106,8 +106,8 @@ services:
     ports:
       - "6431:5432"
     environment:
-      POSTGRES_USER: auth
-      POSTGRES_PASSWORD: auth
+      POSTGRES_USER: ${HUB_AUTH_DB_USERNAME}
+      POSTGRES_PASSWORD: ${HUB_AUTH_DB_PASSWORD}
       POSTGRES_DB: authdb
     volumes:
       - ./pg_auth/data:/var/lib/postgresql/data
@@ -122,8 +122,8 @@ services:
       - ./auth/user/avatars:/server/data/avatars
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://hub-auth-db:5432/authdb
-      - SPRING_DATASOURCE_USERNAME=auth
-      - SPRING_DATASOURCE_PASSWORD=auth
+      - SPRING_DATASOURCE_USERNAME=${HUB_AUTH_DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${HUB_AUTH_DB_PASSWORD}
       - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
       - SPRING_RABBITMQ_PORT=${RABBITMQ_PORT}
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
@@ -132,10 +132,10 @@ services:
       - HYPHA_WEB_APP_BASE_URL=${HYPHA_WEB_APP_BASE_URL}
       - HUB_WEB_APP_BASE_URL=${HUB_WEB_APP_BASE_URL}
       - FRONTEND_BASE_URL=${FRONTEND_BASE_URL}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD}
+      - ADMIN_PASSWORD=${HUB_ADMIN_PASSWORD}
       - USER_AVATARS_PATH=/server/data/avatars/
       - OAUTH_KEYS_PATH=/oauth/keys/
-      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       - hub-auth-db
   hypha-bff:
@@ -156,15 +156,15 @@ services:
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
       - HYPHA_SECRET=${HYPHA_SECRET}
-      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_SECRET=${HUB_AUTH_SECRET}
   hypha-workflow-db:
     image: postgres:14.3-alpine
     container_name: hypha-workflow-db
     ports:
       - "6434:5432"
     environment:
-      POSTGRES_USER: workflow
-      POSTGRES_PASSWORD: workflow
+      POSTGRES_USER: ${HYPHA_WORKFLOW_DB_USERNAME}
+      POSTGRES_PASSWORD: ${HYPHA_WORKFLOW_DB_PASSWORD}
       POSTGRES_DB: myc_hypha_workflow
     volumes:
       - ./pg_workflow/data:/var/lib/postgresql/data
@@ -176,8 +176,8 @@ services:
     environment:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-workflow-db:5432/myc_hypha_workflow
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-workflow-db:5432/myc_hypha_workflow
-      - SPRING_DATASOURCE_USERNAME=workflow
-      - SPRING_DATASOURCE_PASSWORD=workflow
+      - SPRING_DATASOURCE_USERNAME=${HYPHA_WORKFLOW_DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${HYPHA_WORKFLOW_DB_PASSWORD}
       - SERVICE_CORE_URL=${SERVICE_CORE_URL}
       - SERVICE_FILES_URL=${SERVICE_FILES_URL}
       - SERVICE_TASK_URL=${SERVICE_TASK_URL}
@@ -189,7 +189,7 @@ services:
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
       - HYPHA_SECRET=${HYPHA_SECRET}
-      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       - hypha-workflow-db
   hypha-resources-db:
@@ -198,8 +198,8 @@ services:
     ports:
       - "6432:5432"
     environment:
-      POSTGRES_USER: rm
-      POSTGRES_PASSWORD: rm
+      POSTGRES_USER: ${HYPHA_RESOURCE_MANAGER_DB_USERNAME}
+      POSTGRES_PASSWORD: ${HYPHA_RESOURCE_MANAGER_DB_PASSWORD}
       POSTGRES_DB: myc_hypha_rm
     volumes:
       - ./pg_rm/data:/var/lib/postgresql/data
@@ -213,17 +213,17 @@ services:
     environment:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-resources-db:5432/myc_hypha_rm
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-resources-db:5432/myc_hypha_rm
-      - SPRING_DATASOURCE_USERNAME=rm
-      - SPRING_DATASOURCE_PASSWORD=rm
+      - SPRING_DATASOURCE_USERNAME=${HYPHA_RESOURCE_MANAGER_DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${HYPHA_RESOURCE_MANAGER_DB_PASSWORD}
       - SERVICE_CORE_URL=${SERVICE_CORE_URL}
       - SERVICE_FILES_URL=${SERVICE_FILES_URL}
-      - SSH_DEFAULT_KEY_PATH=${SSH_DEFAULT_KEY_PATH}
+      - SSH_DEFAULT_KEY_PATH=/ssh/keys/hypha
       - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
       - SPRING_RABBITMQ_PORT=${RABBITMQ_PORT}
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
       - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
       - HYPHA_SECRET=${HYPHA_SECRET}
-      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       - hypha-resources-db
   hypha-tasks-db:
@@ -232,8 +232,8 @@ services:
     ports:
       - "6532:5432"
     environment:
-      POSTGRES_USER: tm
-      POSTGRES_PASSWORD: tm
+      POSTGRES_USER: ${HYPHA_TASK_MANAGER_DB_USERNAME}
+      POSTGRES_PASSWORD: ${HYPHA_TASK_MANAGER_DB_PASSWORD}
       POSTGRES_DB: myc_hypha_tm
     volumes:
       - ./pg_tm/data:/var/lib/postgresql/data
@@ -245,8 +245,8 @@ services:
     environment:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-tasks-db:5432/myc_hypha_tm
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-tasks-db:5432/myc_hypha_tm
-      - SPRING_DATASOURCE_USERNAME=tm
-      - SPRING_DATASOURCE_PASSWORD=tm
+      - SPRING_DATASOURCE_USERNAME=${HYPHA_TASK_MANAGER_DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${HYPHA_TASK_MANAGER_DB_PASSWORD}
       - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
       - SPRING_RABBITMQ_PORT=${RABBITMQ_PORT}
       - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
@@ -254,7 +254,7 @@ services:
       - SERVICE_FILES_URL=${SERVICE_FILES_URL}
       - SERVICE_RESOURCE_URL=${SERVICE_RESOURCE_URL}
       - HYPHA_SECRET=${HYPHA_SECRET}
-      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       - hypha-tasks-db
   hypha-dashboard-db:
@@ -263,8 +263,8 @@ services:
     ports:
       - "6435:5432"
     environment:
-      POSTGRES_USER: dashboard
-      POSTGRES_PASSWORD: dashboard
+      POSTGRES_USER: ${HYPHA_DASHBOARD_DB_USERNAME}
+      POSTGRES_PASSWORD: ${HYPHA_DASHBOARD_DB_PASSWORD}
       POSTGRES_DB: myc_hypha_dashboard
     volumes:
       - ./pg_dashboard/data:/var/lib/postgresql/data
@@ -277,10 +277,10 @@ services:
     environment:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-dashboard-db:5432/myc_hypha_dashboard
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-dashboard-db:5432/myc_hypha_dashboard
-      - SPRING_DATASOURCE_USERNAME=dashboard
-      - SPRING_DATASOURCE_PASSWORD=dashboard
+      - SPRING_DATASOURCE_USERNAME=${HYPHA_DASHBOARD_DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${HYPHA_DASHBOARD_DB_PASSWORD}
       - HYPHA_SECRET=${HYPHA_SECRET}
-      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       - hypha-dashboard-db
 

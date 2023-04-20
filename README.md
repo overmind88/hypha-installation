@@ -266,7 +266,7 @@ cp selfsigned/v3.ext ssl/` - Contains SAN parametes
 
   | Key=Value | Description |
   | ------ | ----------------- |
-  | `ADMIN_PASSWORD`=root  | default password for firsts user: `admin@mycesys.com` |
+  | `HUB_ADMIN_PASSWORD`=root | default password for firsts user: `admin@mycesys.com` |
   | `AUTH_SECRET`=set_random_long_string_here  | strong password (randomly generated) with length no less than 32 characters |
   | `HYPHA_SECRET`= another_random_long_string_here | strong password (randomly generated) with length no less than 32 characters |
 
