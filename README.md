@@ -77,6 +77,7 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
   - CentOS 7
   - CentOS 8
   - Ubuntu 20.04 or newer
+- Installation scripts are now available only for Unix-like operating systems
 
 ### 2. Installation (All in one)
 
@@ -85,6 +86,11 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 
 - Docker images at Docker Hub: https://hub.docker.com/repositories/mycesys
 - Sample configuration & scripts: https://github.com/mycesys/hypha-installation
+  - To download current repository content use this command (or clone it with `git`):
+  
+```bash
+wget https://github.com/mycesys/hypha-installation/archive/refs/heads/main.zip
+```
 
 **NEXT STEPS SHOULD BE EXECUTED IN `hypha-installation/allinone` direcotry**
 
@@ -107,7 +113,7 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
   - To generate new keys run the script:
 
 ```bash
-./generate-oauth-keys.sh`
+./generate-oauth-keys.sh
 ```
 
 - SSH
@@ -115,7 +121,7 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
   - To generate new keys run the script: 
 
 ```bash
-./generate-ssh-keys.sh`
+./generate-ssh-keys.sh
 ```
 
 - SSL
@@ -136,7 +142,7 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 - Copy sample env file to `.env`: 
 
 ```bash
-cp ./dot.env.example ./.env`
+cp ./dot.env.example ./.env
 ```
 
 - Required changes in `.env`
@@ -198,7 +204,7 @@ cp selfsigned/ssl.cfg ssl/
 ```
 
 ```bash
-cp selfsigned/v3.ext ssl/` - Contains SAN parametes
+cp selfsigned/v3.ext ssl/
 ```
 
 - Fill `ssl/ssl.cfg` with your server parameters
@@ -294,7 +300,7 @@ iptables -t nat -L --line-numbers
 
 #### Issues with environment configuration
 
-- Symptom: Endless redirects and reloading after enter the login page
+- Symptom: Endless redirects and reloading when trying to access the login page
   - Check `HYPHA_PUBLIC_URL` and `HUB_PUBLIC_URL` in `.env` file: they should refer to either `localhost` or `127.0.0.1` because each docker container has its own `localhost`
   - Check SSL certificate parameters (described below)
 
