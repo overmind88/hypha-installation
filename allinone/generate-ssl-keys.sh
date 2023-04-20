@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Password for private key
-PASSPHRASE=mycesys
+PASSPHRASE=mycesys_ssl_pass
 
 #Generate Diffie-Hellman (DH) key-exchange
 openssl dhparam -out ssl/ssl-dhparams.pem 2048
@@ -24,3 +24,4 @@ cp selfsigned/options-ssl-nginx.conf ssl/options-ssl-nginx.conf
 #Add private key password to nginx configuration file
 echo "$PASSPHRASE" >> ssl/ssl_passwords
 echo "ssl_password_file /etc/ssl/ssl_passwords;" >> ssl/options-ssl-nginx.conf
+sed -i "s/mycesys_ssl_pass/$PASSPHRASE/" ./add-ssl-keys-to-jdk.sh
