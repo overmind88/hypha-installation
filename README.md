@@ -60,9 +60,9 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 
 #### Software
 
-- `docker` 
-- `docker-compose`
-- `openssl`
+- `docker ([Official installation guide](https://docs.docker.com/engine/install/))
+- `docker-compose`([Official installation guide](https://docs.docker.com/compose/install/linux/))
+- `openssl`(Use your distributive repositiories or [official website](https://www.openssl.org/) to install)
 
 #### Host & Network
 
@@ -161,10 +161,14 @@ cp ./dot.env.example ./.env
 
 #### Run Hypha & Hub
 
-- To start the system run the script:
+- To start the system run following scripts:
 
 ```bash
-docker-compose up --pull -d
+docker-compose pull
+```
+
+```bash
+docker-compose up -d
 ```
 
 - If you are using a self-signed certificate, remember to complete the additional steps described in [3. Advanced guide: addtional configuration steps](#additional-steps)
@@ -272,7 +276,7 @@ cp selfsigned/v3.ext ssl/
 
   | Key=Value | Description |
   | ------ | ----------------- |
-  | `HUB_ADMIN_PASSWORD`=root | default password for firsts user: `admin@mycesys.com` |
+  | `HUB_ADMIN_PASSWORD`=root | default password for first user: `admin@mycesys.com` |
   | `AUTH_SECRET`=set_random_long_string_here  | strong password (randomly generated) with length no less than 32 characters |
   | `HYPHA_SECRET`= another_random_long_string_here | strong password (randomly generated) with length no less than 32 characters |
 
