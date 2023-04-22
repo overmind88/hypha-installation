@@ -60,9 +60,9 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 
 #### Software
 
-- `docker ([Official installation guide](https://docs.docker.com/engine/install/))
-- `docker-compose`([Official installation guide](https://docs.docker.com/compose/install/linux/))
-- `openssl`(Use your distributive repositiories or [official website](https://www.openssl.org/) to install)
+- `docker` ([Official installation guide](https://docs.docker.com/engine/install/))
+- `docker-compose` ([Official installation guide](https://docs.docker.com/compose/install/linux/))
+- `openssl` (Use your distributive repositiories or [official website](https://www.openssl.org/) to install)
 
 #### Host & Network
 
@@ -87,12 +87,12 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 - Docker images at Docker Hub: https://hub.docker.com/repositories/mycesys
 - Sample configuration & scripts: https://github.com/mycesys/hypha-installation
   - To download current repository content use this command (or clone it with `git`):
-  
+
 ```bash
 wget https://github.com/mycesys/hypha-installation/archive/refs/heads/main.zip
 ```
 
-**NEXT STEPS SHOULD BE EXECUTED IN `hypha-installation/allinone` direcotry**
+**NEXT STEPS SHOULD BE EXECUTED IN `hypha-installation/allinone` directotry**
 
 ##### Prepare directories
 
@@ -103,7 +103,7 @@ wget https://github.com/mycesys/hypha-installation/archive/refs/heads/main.zip
 ```
 
 - Full list of direcories could be found in [Technical details / List of directories](#list-of-directories) section.
-- **NOTE:** The `files/data`/ directory is used to store all models and simulation data. Ensure there is enough space available for this purpose. 
+- **NOTE:** The `files/data`/ directory is used to store all models and simulation data. Ensure there is enough space available for this purpose.
 
 
 ##### Configure certificates and keys
@@ -118,7 +118,7 @@ wget https://github.com/mycesys/hypha-installation/archive/refs/heads/main.zip
 
 - SSH
   - Place the private key named `hypha`, which will be used by the system to access computational nodes, in the `ssh/keys` directory. The corresponding public key should be stored in the `authorized_keys` file on all computational nodes.
-  - To generate new keys run the script: 
+  - To generate new keys run the script:
 
 ```bash
 ./generate-ssh-keys.sh
@@ -133,13 +133,13 @@ wget https://github.com/mycesys/hypha-installation/archive/refs/heads/main.zip
   | `fullchain.pem` |SSL certificate |
   | `privkey.pem` | SSL private key |
   | `options-ssl-nginx.conf` | SSL configuration file (decribed below) |
- 
+
   - `options-ssl-nginx.conf` could be found in `selfsigned/` (if you don't have one from SSL certificate provider)
   - To generate self-signed SSL certificate follow the instructions at chapter [3. Advanced guide: generate SSL certificate](#generate-and-use-self-signed-ssl-certificate)
 
 ##### Configure `.env` file
 
-- Copy sample env file to `.env`: 
+- Copy sample env file to `.env`:
 
 ```bash
 cp ./dot.env.example ./.env
@@ -154,7 +154,8 @@ cp ./dot.env.example ./.env
   | `HUB_PUBLIC_PORT=8301` | port for Hub interface |
   | `HYPHA_PUBLIC_URL=hypha.yourdomain.com` | place here public address (IP or domain name) of hypha instance |
   | `HYPHA_PUBLIC_PORT=8300` | port for Hypha interface |
-  	
+
+  - **NOTE: If you are going to use standard HTTP ports (80 for HTTP and 443 for HTTPS), please set the URLs manually without specifying the port (e.g., ':80' or ':443'), as browsers automatically omit the port in such cases. Parameters described above should be set in any case, sorry for the inconvenience**
   - All other changes in `.env` are optional for allinone setup. To learn more follow the guide at: [Technical details / Environment configuration](#environment-configuration)
 
 **For all-in-one installation <HYPHA_PUBLIC_URL> and <HUB_PUBLIC_URL> could be the same but ports should be different.**
@@ -181,7 +182,43 @@ docker-compose up -d
   - Use `admin@mycesys.com` as a login
   - Use `root` as password (if you did not change it in `.env` during the installation process)
 - After successfull login you will be redirected to Dashboard page
-- To learn how to create models, run workflows, extent your license and more, please take a look at the [user guide](https://mycesys.com/hypha/2023.1/userguide.pdf). If you encounter any errors, check our [Troubleshooting](#5-troubleshooting) section.
+- To learn how to create models, run workflows and more, please take a look at the [user guide](https://mycesys.com/hypha/2023.1/userguide.pdf). If you encounter any errors, check our [Troubleshooting](#5-troubleshooting) section.
+- In this version of the system (2023.1) some administration could be done only with direct API call. You can find bash scripts for this actions in `scripts` directory in this repository or [download them from site](https://mycesys.com/hypha/2023.1/adm_scripts.tar.gz):
+- Extent your license (to obtain a license file please contact us using our website www.mycesys.com)
+ 
+ ```
+ scripts/hub-update_license.sh
+ ```
+
+- Change password settings
+ 
+ ```
+ scripts/hub-update_password_format.sh
+ ```
+ 
+- Change confirmation lifetime
+  
+```
+scripts/hub-update_confirmation_lifetime.sh
+```
+  
+- Create plain Cluster
+  
+```
+scripts/hypha-create_cluster_plain.sh
+```
+  
+- Add Node to Cluster
+
+```
+scripts/hypha-create_node.sh
+```
+  
+- Add Solver (sample configs could found in `scripts/solvers`)
+
+```
+scripts/hypha-create_solver.sh
+```
 
 ### 3. Advanced guide
 
@@ -212,15 +249,15 @@ cp selfsigned/v3.ext ssl/
 ```
 
 - Fill `ssl/ssl.cfg` with your server parameters
-	- `C = US` - country code 
-	- `ST = State` - state
-	- `L = City` - your city
-	- `O = Org LLC` - your organization
-	- `OU = Org Unit` - your organization unit
-	- `CN = example.com` - Common Name: set your server FQDN or IP address here
+        - `C = US` - country code
+        - `ST = State` - state
+        - `L = City` - your city
+        - `O = Org LLC` - your organization
+        - `OU = Org Unit` - your organization unit
+        - `CN = example.com` - Common Name: set your server FQDN or IP address here
 - Fill `ssl/v3.ext` with your server parameters
   - `subjectAltName = IP:value,DNS:value` - place comma separated pairs `IP:<ip address>` or `DNS:<DNS name>` corresponding to your server
-- Run the following script to generate keys (might take some time): 
+- Run the following script to generate keys (might take some time):
 
 ```bash
 ./generate-ssl-keys.sh
@@ -338,17 +375,17 @@ org.springframework.security.oauth2.jwt.JwtDecoderInitializationException: Faile
 
 #### Issues with routing
 
-- Symptom: `Connection refused` error in logs after login attemp. 
+- Symptom: `Connection refused` error in logs after login attemp.
   - Environment: often reproduces when system is installed on VM with ports forwading (maybe on router)
   - Check: try to call an API method `https:<HUB_URL>/oauth2/jwks`, it should be accessible from host and from `hub-auth`, `hypha-gateway` docker containers
 ```bash
 curl -k --location --request GET https://<HUB_URL>/oauth2/jwks
-``` 
+```
   - If it fails than you need some routing configuration to make it working fine
   - Here is an example:
 
 ![Environment scheme](https://mycesys.com/hypha/2023.1/2023_1_issue_network_routing.png)
-  
+
   - On this scheme all `Connections` should work properly
   - To allow connections from VM to `Public interface` you should add following rules (iptables):
 
