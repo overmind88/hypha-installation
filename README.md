@@ -317,6 +317,21 @@ cp selfsigned/v3.ext ssl/
   | `AUTH_SECRET`=set_random_long_string_here  | strong password (randomly generated) with length no less than 32 characters |
   | `HYPHA_SECRET`= another_random_long_string_here | strong password (randomly generated) with length no less than 32 characters |
 
+- Email Notifications
+
+  | Key=Value | Description                                         |
+  |-----------------------------------------------------| ----------------- |
+  | `HUB_AUTH_MAIL_SERVER_HOST`=smtp.gmail.com | mail server host                                    |
+  | `HUB_AUTH_MAIL_SERVER_POST`=587  | mail server port                                    |
+  | `HUB_AUTH_MAIL_USERNAME`=no-reply@mycesys.com | user name (email address) of the mail account       |
+  | `HUB_AUTH_MAIL_PASSWORD`=secret | user password (or token) of the mail account        |
+  | `HUB_AUTH_MAIL_PROTOCOL`=smtp  | protocol used for emails transferring               |
+  | `HUB_AUTH_MAIL_SMTP_AUTH`=true | use mail account authentication                     |
+  | `HUB_AUTH_MAIL_TLS_ENABLE`=true | use TLS protocol                                    |
+  | `HUB_AUTH_MAIL_SSL_ENABLE`=false  | use SSL protocol                                    |
+  | `HUB_AUTH_MAIL_FROM`=no-reply@mycesys.com | email address from which notifications will be sent |
+
+
 ### 5. Troubleshooting
 
 #### Common techniques
