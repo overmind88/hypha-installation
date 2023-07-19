@@ -26,8 +26,12 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 - [Directories](#list-of-directories)
 - [Environment configuration](#environment-configuration)
 5. [Troubleshooting](#5-troubleshooting)
+6. [Update existing installation](#6-update-existing-installation)
+- [2023.1 to 2023.2-beta](#20231-to-20232-beta)
 
 ### 1. Requrements
+
+This is a recommended configuration for basic installation. If you need requirements based on your environment and team size please contact us by: [hypha@mycesys.com](mailto:hypha@mycesys.com).
 
 #### Hardware
 
@@ -62,12 +66,12 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 
 - `docker` ([Official installation guide](https://docs.docker.com/engine/install/))
 - `docker-compose` ([Official installation guide](https://docs.docker.com/compose/install/linux/))
-- `openssl` (Use your distributive repositiories or [official website](https://www.openssl.org/) to install)
+- `openssl` (Use your distributive repositories or [official website](https://www.openssl.org/) to install)
 
 #### Host & Network
 
 - Internet access to [Docker Hub](https://hub.docker.com)
-- Priviledges to run docker containers
+- Privileges to run docker containers
 - SSL certificate (HTTPS required to support OAuth and native hashing algorithm)
         - If you don't have one you can get it for free from https://letsencrypt.org/ or use self-signed
 
@@ -81,10 +85,11 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 
 ### 2. Installation (All in one)
 
+**NOTE:** if you already have an installed version of Hypha please check the [Update section](#6-update-existing-installation) of this guide.
 
 #### Configuration
 
-- Docker images at Docker Hub: https://hub.docker.com/repositories/mycesys
+- Docker images at Docker Hub: https://hub.docker.com/u/mycesys
 - Sample configuration & scripts: https://github.com/mycesys/hypha-installation
   - To download current repository content use this command (or clone it with `git`):
 
@@ -92,7 +97,7 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 wget https://github.com/mycesys/hypha-installation/archive/refs/heads/main.zip
 ```
 
-**NEXT STEPS SHOULD BE EXECUTED IN `hypha-installation/allinone` directotry**
+**NEXT STEPS SHOULD BE EXECUTED IN `hypha-installation/allinone` directory**
 
 ##### Prepare directories
 
@@ -102,8 +107,8 @@ wget https://github.com/mycesys/hypha-installation/archive/refs/heads/main.zip
 ./prepare-dirs.sh
 ```
 
-- Full list of direcories could be found in [Technical details / List of directories](#list-of-directories) section.
-- **NOTE:** The `files/data`/ directory is used to store all models and simulation data. Ensure there is enough space available for this purpose.
+- Full list of directories could be found in [Technical details / List of directories](#list-of-directories) section.
+- **NOTE:** The `files/data` directory is used to store all models and simulation data. Ensure there is enough space available for this purpose.
 
 
 ##### Configure certificates and keys
@@ -114,14 +119,6 @@ wget https://github.com/mycesys/hypha-installation/archive/refs/heads/main.zip
 
 ```bash
 ./generate-oauth-keys.sh
-```
-
-- SSH
-  - Place the private key named `hypha`, which will be used by the system to access computational nodes, in the `ssh/keys` directory. The corresponding public key should be stored in the `authorized_keys` file on all computational nodes.
-  - To generate new keys run the script:
-
-```bash
-./generate-ssh-keys.sh
 ```
 
 - SSL
@@ -139,7 +136,7 @@ wget https://github.com/mycesys/hypha-installation/archive/refs/heads/main.zip
 
 ##### Configure `.env` file
 
-- Copy sample env file to `.env`:
+- Copy sample environment file to `.env`:
 
 ```bash
 cp ./dot.env.example ./.env
@@ -156,7 +153,7 @@ cp ./dot.env.example ./.env
   | `HYPHA_PUBLIC_PORT=8300` | port for Hypha interface |
 
   - **NOTE: If you are going to use standard HTTP ports (80 for HTTP and 443 for HTTPS), please set the URLs manually without specifying the port (e.g., ':80' or ':443'), as browsers automatically omit the port in such cases. Parameters described above should be set in any case, sorry for the inconvenience**
-  - All other changes in `.env` are optional for allinone setup. To learn more follow the guide at: [Technical details / Environment configuration](#environment-configuration)
+  - All other changes in `.env` are optional for all-in-one setup. To learn more follow the guide at: [Technical details / Environment configuration](#environment-configuration)
 
 **For all-in-one installation <HYPHA_PUBLIC_URL> and <HUB_PUBLIC_URL> could be the same but ports should be different.**
 
@@ -172,52 +169,38 @@ docker-compose pull
 docker-compose up -d
 ```
 
-- If you are using a self-signed certificate, remember to complete the additional steps described in [3. Advanced guide: addtional configuration steps](#additional-steps)
+- If you are using a self-signed certificate, do not forget to perform the additional steps described in [3. Advanced guide: addtional configuration steps](#additional-steps)
 
 #### First steps
 
 - Open your browser and follow the link: https://HYPHA_PUBLIC_URL:HYPHA_PUBLIC_PORT
-- If you are using a self-signed certiticate, you should confirm security exception in browser
+- If you are using a self-signed certificate, you should confirm security exception in browser
 - Your should see login form now:
   - Use `admin@mycesys.com` as a login
   - Use `root` as password (if you did not change it in `.env` during the installation process)
-- After successfull login you will be redirected to Dashboard page
+- After successful login you will be redirected to Dashboard page
 - To learn how to create models, run workflows and more, please take a look at the [user guide](https://mycesys.com/hypha/2023.1/userguide.pdf). If you encounter any errors, check our [Troubleshooting](#5-troubleshooting) section.
-- In this version of the system (2023.1) some administration could be done only with direct API call. You can find bash scripts for this actions in `scripts` directory in this repository or [download them from site](https://mycesys.com/hypha/2023.1/adm_scripts.tar.gz):
+- In this version of the system (2023.2) some administration actions could be done only with direct API call. You can find bash scripts for this actions in `scripts` directory in this repository or [download them from site](https://mycesys.com/hypha/2023.1/adm_scripts.tar.gz):
 - Extent your license (to obtain a license file please contact us using our website www.mycesys.com)
- 
+
+ ```bash
+ scripts/hub-add_license_users.sh
  ```
- scripts/hub-update_license.sh
+
+ ```bash
+ scripts/hub-add_license_support.sh
  ```
 
 - Change password settings
- 
- ```
+
+ ```bash
  scripts/hub-update_password_format.sh
  ```
- 
+
 - Change confirmation lifetime
-  
-```
+
+```bash
 scripts/hub-update_confirmation_lifetime.sh
-```
-  
-- Create plain Cluster
-  
-```
-scripts/hypha-create_cluster_plain.sh
-```
-  
-- Add Node to Cluster
-
-```
-scripts/hypha-create_node.sh
-```
-  
-- Add Solver (sample configs could found in `scripts/solvers`)
-
-```
-scripts/hypha-create_solver.sh
 ```
 
 ### 3. Advanced guide
@@ -228,7 +211,7 @@ You can obtain SSL certificate for your DNS record or IP address and use it to s
 
 **Advantages**
 - Free long term SSL certificate
-- Easy to manage (create, change, prolongate)
+- Easy to manage (creation, changing, prolongation)
 - No dependencies on CA
 
 **Disadvantages**
@@ -290,32 +273,38 @@ cp selfsigned/v3.ext ssl/
 
 #### List of directories
 
-| Path | Description |
-| ------ | ----------------- |
-| `auth/user/avatars/` | place where avatars for all users are stored |
-| `core/common/avatars/` | place where avatars for all other objects are stored |
-| `files/data/` | place where all main data is stored (models, simulation results etc). Usually these files take a large amount of space |
-| `oauth/keys/` | place for RSA keys used in OAuth2 authentication process |
-| `ssh/keys/` | place for SSH-keys for all computational clusters |
-| `ssl/` | place for SSL certificates for HTTPS support |
-| `pg_auth` | PostgreSQL data directory for authentication service (Hub) |
-| `pg_core` | PostgreSQL data directory for core service |
-| `pg_dashboard` | PostgreSQL data directory for dashboard service |
-| `pg_fm` | PostgreSQL data directory for files management service |
-| `pg_rm` | PostgreSQL data directory for resources management service |
-| `pg_tm` | PostgreSQL data directory for tasks management service |
-| `pg_workflow` | PostgreSQL data directory for workflow management service |
-| `rabbitmq_data` | RabbitMQ directory for persistent data |
+| Path                   | Description                                                                                                            |
+|------------------------|------------------------------------------------------------------------------------------------------------------------|
+| `auth/user/avatars/`   | place where avatars for all users are stored                                                                           |
+| `core/common/avatars/` | place where avatars for all other objects are stored                                                                   |
+| `files/data/`          | place where all main data is stored (models, simulation results etc). Usually these files take a large amount of space |
+| `oauth/keys/`          | place for RSA keys used in OAuth2 authentication process                                                               |
+| `ssh/keys/`            | place for SSH-keys for all computational clusters                                                                      |
+| `ssl/`                 | place for SSL certificates for HTTPS support                                                                           |
+| `pg_auth`              | PostgreSQL data directory for authentication service (Hub)                                                             |
+| `pg_core`              | PostgreSQL data directory for core service                                                                             |
+| `pg_dashboard`         | PostgreSQL data directory for dashboard service                                                                        |
+| `pg_fm`                | PostgreSQL data directory for files management service                                                                 |
+| `pg_rm`                | PostgreSQL data directory for resources management service                                                             |
+| `pg_tm`                | PostgreSQL data directory for tasks management service                                                                 |
+| `pg_workflow`          | PostgreSQL data directory for workflow management service                                                              |
+| `rabbitmq_data`        | RabbitMQ directory for persistent data                                                                                 |
+| `consul_data`          | HashiCorp Consul directory for persistent data                                                                         |
+| `vault_data`           | HashiCorp Vault directory for persistent data                                                                          |
 
 #### Environment configuration
 
 - Secrets
 
-  | Key=Value | Description |
-  | ------ | ----------------- |
-  | `HUB_ADMIN_PASSWORD`=root | default password for first user: `admin@mycesys.com` |
-  | `AUTH_SECRET`=set_random_long_string_here  | strong password (randomly generated) with length no less than 32 characters |
-  | `HYPHA_SECRET`= another_random_long_string_here | strong password (randomly generated) with length no less than 32 characters |
+  | Key=Value                                                   | Description |
+----------------------------------------------------------------| ------ | ----------------- |
+  | `HUB_ADMIN_PASSWORD`=root                                   | default password for first user: `admin@mycesys.com` |
+  | `HUB_AUTH_SECRET`=random_long_string_here                   | strong password (randomly generated) with length no less than 32 characters |
+  | `HYPHA_SECRET`= random_long_string_here                     | strong password (randomly generated) with length no less than 32 characters |
+  | `MYC_SERVICE_VAULT_ROLE_ID`= random_long_string_here        | strong password (randomly generated) with length no less than 32 characters |
+  | `MYC_SERVICE_VAULT_SECRET_ID`= random_long_string_here      | strong password (randomly generated) with length no less than 32 characters |
+  | `HYPHA_COMMON_CIPHER_KEY`= random_long_string_here          | strong password (randomly generated) with length no less than 32 characters |
+  | `HUB_AUTH_NOTIFICATION_CIPHER_KEY`= random_long_string_here | strong password (randomly generated) with length no less than 32 characters |
 
 - Email Notifications
 
@@ -413,4 +402,63 @@ iptables -t nat -A POSTROUTING --source yyy.yyy.yyy.yyy  --destination xxx.xxx.x
 ```yml
  extra_hosts:
       - "<HYPHA_PUBLIC_DOMAIN>:yyy.yyy.yyy.yyy"
+```
+
+### 6. Update existing installation
+
+#### 2023.1 to 2023.2-beta
+
+**Before update:**
+
+- We are strongly recommending to back up:
+  - all databases
+  - data from 'files/data' directory
+  - configuration
+- If you made any changes to `docker-compose.yml` in previous installation please ensure that you create a backup.
+
+**Update version**
+
+1. Update your installation configuration to actual version
+- Using git:
+
+```bash
+git fetch
+```
+
+```bash
+git merge origin/main
+```
+
+- Manually
+  - download `config-migration_2023.1-2-2023.2.beta.sh` script from the [repository](https://github.com/mycesys/hypha-installation/tree/2023.2-beta/allinone/)
+3. Run migration script 
+- Run script `config-migration_2023.1-2-2023.2.beta.sh` in `./allinone` directory
+
+```bash
+./config-migration_2023.1-2-2023.2.beta.sh
+```
+
+- For more details please run:
+
+```bash
+./config-migration_2023.1-2-2023.2.beta.sh --help
+```
+
+- Please check new `.env` file generated by script before start
+- Please check new `docker-compose.yml` file before start. If you made any changes during the installation of previous version, please sync them with new version of this file.
+- Please check new nginx configuration files:
+  - `nginx.hub_frontend.conf`
+  - `nginx.hypha_frontend.conf`
+3. To update images and restart system run:
+
+```bash
+docker-compose pull
+```
+
+```bash
+docker-compose up -d
+```
+
+```bash
+./add-ssl-keys-to-jdk.sh
 ```

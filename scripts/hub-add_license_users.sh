@@ -45,7 +45,7 @@ fi
 
 # Read the license and send the request
 license=$(cat "$license_file")
-RESULT=$(curl --location --request POST "$url/api/v1/license/user" \
+RESULT=$(curl --location --request POST "$url/system/license/user" \
          --header 'Content-Type: application/json' \
          --data-raw '{
              "data": {
