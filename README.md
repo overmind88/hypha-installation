@@ -5,7 +5,7 @@
 
 Hypha is a SPDM system that allows to manage data and simulations, run computational tasks and process the results. First enterprise level system available for teams up to 5 users for free.
 
-- User guide: https://mycesys.com/hypha/2023.1/userguide.pdf
+- User guide: https://mycesys.com/hypha/2023.2/userguide.pdf
 - Installation guide: https://github.com/mycesys/hypha-installation
 - Docker images: https://hub.docker.com/repositories/mycesys
 
@@ -296,15 +296,15 @@ cp selfsigned/v3.ext ssl/
 
 - Secrets
 
-  | Key=Value                                                   | Description |
-----------------------------------------------------------------| ------ | ----------------- |
-  | `HUB_ADMIN_PASSWORD`=root                                   | default password for first user: `admin@mycesys.com` |
-  | `HUB_AUTH_SECRET`=random_long_string_here                   | strong password (randomly generated) with length no less than 32 characters |
-  | `HYPHA_SECRET`= random_long_string_here                     | strong password (randomly generated) with length no less than 32 characters |
-  | `MYC_SERVICE_VAULT_ROLE_ID`= random_long_string_here        | strong password (randomly generated) with length no less than 32 characters |
-  | `MYC_SERVICE_VAULT_SECRET_ID`= random_long_string_here      | strong password (randomly generated) with length no less than 32 characters |
-  | `HYPHA_COMMON_CIPHER_KEY`= random_long_string_here          | strong password (randomly generated) with length no less than 32 characters |
-  | `HUB_AUTH_NOTIFICATION_CIPHER_KEY`= random_long_string_here | strong password (randomly generated) with length no less than 32 characters |
+| Key=Value                                                   | Description |
+| ----------------------------------------------------------------| ----------------- |
+| `HUB_ADMIN_PASSWORD`=root                                   | default password for first user: `admin@mycesys.com` |
+| `HUB_AUTH_SECRET`=random_long_string_here                   | strong password (randomly generated) with length no less than 32 characters |
+| `HYPHA_SECRET`= random_long_string_here                     | strong password (randomly generated) with length no less than 32 characters |
+| `MYC_SERVICE_VAULT_ROLE_ID`= random_long_string_here        | strong password (randomly generated) with length no less than 32 characters |
+| `MYC_SERVICE_VAULT_SECRET_ID`= random_long_string_here      | strong password (randomly generated) with length no less than 32 characters |
+| `HYPHA_COMMON_CIPHER_KEY`= random_long_string_here          | Used for AES encryption. Should be 32, 24 or 16 symbols lengths |
+| `HUB_AUTH_NOTIFICATION_CIPHER_KEY`= random_long_string_here | Used for AES encryption. Should be 32, 24 or 16 symbols length |
 
 - Email Notifications
 
@@ -418,20 +418,8 @@ iptables -t nat -A POSTROUTING --source yyy.yyy.yyy.yyy  --destination xxx.xxx.x
 
 **Update version**
 
-1. Update your installation configuration to actual version
-- Using git:
-
-```bash
-git fetch
-```
-
-```bash
-git merge origin/main
-```
-
-- Manually
-  - download `config-migration_2023.1-2-2023.2.beta.sh` script from the [repository](https://github.com/mycesys/hypha-installation/tree/2023.2-beta/allinone/)
-3. Run migration script 
+1. Download `config-migration_2023.1-2-2023.2.beta.sh` script from the [repository](https://github.com/mycesys/hypha-installation/tree/2023.2-beta/allinone/)
+2. Run migration script 
 - Run script `config-migration_2023.1-2-2023.2.beta.sh` in `./allinone` directory
 
 ```bash
