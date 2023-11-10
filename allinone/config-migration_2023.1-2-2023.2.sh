@@ -1,14 +1,14 @@
 #!/bin/bash
 # This script perform update docker environments for Hypha
-# from version 2023.1 to version 2023.2-beta
-# You must use docker-compose.yml file for 2023.2-beta version
+# from version 2023.1 to version 2023.2
+# You must use docker-compose.yml file for 2023.2 version
 
 set -e
 
 # Default URL of the installation script on GitHub
-GITHUB_URL="https://github.com/mycesys/hypha-installation/archive/refs/heads/2023.2-beta.zip"
+GITHUB_URL="https://github.com/mycesys/hypha-installation/archive/refs/heads/2023.2.zip"
 
-NEW_VERSION_SOURCES=2023.2-beta_"$(date '+%s')"
+NEW_VERSION_SOURCES=2023.2_"$(date '+%s')"
 
 # The filename to save the downloaded zip file as
 ZIP_FILENAME=$NEW_VERSION_SOURCES.zip
@@ -19,13 +19,13 @@ UNZIP_DIR=$NEW_VERSION_SOURCES
 show_help() {
   echo "Usage: $0 [OPTIONS]"
   echo
-  echo "This script migrates from version 2023.1 to 2023.2-beta."
+  echo "This script migrates from version 2023.1 to 2023.2."
   echo "It downloads the new version of the installation script from [GitHub](https://github.com/mycesys/hypha-installation),"
   echo "unzips it, and proceeds with the migration."
   echo
   echo "Options:"
   echo "  -h, --help                 Display this help message and exit."
-  echo "  --archive=path/to/archive  Path to the local archive contains 2023.2-beta installation scripts."
+  echo "  --archive=path/to/archive  Path to the local archive contains 2023.2 installation scripts."
   echo "  --env=path/to/.env         Path to the existing .env configuration file."
   echo
   echo "If there is no connection to GitHub, the script can accept the archive as a named parameter."
@@ -33,9 +33,9 @@ show_help() {
   echo
   echo "Examples:"
   echo "  $0                                               # Downloads from GitHub and proceeds with migration"
-  echo "  $0 --archive=2023.2-beta.zip                     # Uses provided zip file for migration"
+  echo "  $0 --archive=2023.2.zip                     # Uses provided zip file for migration"
   echo "  $0 --env=config/.env                             # Specifies path to .env file"
-  echo "  $0 --archive=2023.2-beta.zip --env=config/.env   # Specifies path to .env file"
+  echo "  $0 --archive=2023.2.zip --env=config/.env   # Specifies path to .env file"
 }
 
 # Default paths
@@ -96,11 +96,11 @@ echo "Running migration..."
 
 #### Copy new version of required files from new installation scripts
 
-cp "$UNZIP_DIR"/hypha-installation-2023.2-beta/allinone/prepare-dirs.sh ./
-cp "$UNZIP_DIR"/hypha-installation-2023.2-beta/allinone/docker-compose.yml ./
-cp -r "$UNZIP_DIR"/hypha-installation-2023.2-beta/allinone/vault_config ./
-cp "$UNZIP_DIR"/hypha-installation-2023.2-beta/allinone/nginx.hub_frontend.conf ./
-cp "$UNZIP_DIR"/hypha-installation-2023.2-beta/allinone/nginx.hypha_frontend.conf ./
+cp "$UNZIP_DIR"/hypha-installation-2023.2/allinone/prepare-dirs.sh ./
+cp "$UNZIP_DIR"/hypha-installation-2023.2/allinone/docker-compose.yml ./
+cp -r "$UNZIP_DIR"/hypha-installation-2023.2/allinone/vault_config ./
+cp "$UNZIP_DIR"/hypha-installation-2023.2/allinone/nginx.hub_frontend.conf ./
+cp "$UNZIP_DIR"/hypha-installation-2023.2/allinone/nginx.hypha_frontend.conf ./
 
 
 #### Creating a backup for existing .env file
@@ -148,17 +148,17 @@ echo "VAULT_URI=http://vault:8201"
 echo "RABBITMQ_HOST=$RABBITMQ_HOST"
 echo "RABBITMQ_PORT=$RABBITMQ_PORT"
 printf '\n'
-echo "HYPHA_CORE_VERSION=2023.2-beta"
-echo "HYPHA_FILES_VERSION=2023.2-beta"
-echo "HYPHA_GATEWAY_VERSION=2023.2-beta"
-echo "HYPHA_BFF_VERSION=2023.2-beta"
-echo "HYPHA_WORKFLOW_VERSION=2023.2-beta"
-echo "HYPHA_RESOURCES_VERSION=2023.2-beta"
-echo "HYPHA_TASKS_VERSION=2023.2-beta"
-echo "HYPHA_DASHBOARD_VERSION=2023.2-beta"
-echo "HYPHA_UI_VERSION=2023.2-beta"
-echo "HUB_AUTH_VERSION=2023.2-beta"
-echo "HUB_UI_VERSION=2023.2-beta"
+echo "HYPHA_CORE_VERSION=2023.2"
+echo "HYPHA_FILES_VERSION=2023.2"
+echo "HYPHA_GATEWAY_VERSION=2023.2"
+echo "HYPHA_BFF_VERSION=2023.2"
+echo "HYPHA_WORKFLOW_VERSION=2023.2"
+echo "HYPHA_RESOURCES_VERSION=2023.2"
+echo "HYPHA_TASKS_VERSION=2023.2"
+echo "HYPHA_DASHBOARD_VERSION=2023.2"
+echo "HYPHA_UI_VERSION=2023.2"
+echo "HUB_AUTH_VERSION=2023.2"
+echo "HUB_UI_VERSION=2023.2"
 printf '\n'
 echo "HUB_AUTH_MAIL_SERVER_HOST=$HUB_AUTH_MAIL_SERVER_HOST"
 echo "HUB_AUTH_MAIL_SERVER_POST=$HUB_AUTH_MAIL_SERVER_POST"
