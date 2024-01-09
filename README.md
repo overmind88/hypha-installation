@@ -7,7 +7,7 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 
 - User guide: https://mycesys.com/hypha/2023.2/userguide.pdf
 - Installation guide: https://github.com/mycesys/hypha-installation
-- Docker images: https://hub.docker.com/repositories/mycesys
+- Docker images: https://hub.docker.com/u/mycesys
 
 ## Installation
 
@@ -65,7 +65,7 @@ This is a recommended configuration for basic installation. If you need requirem
 #### Software
 
 - `docker` ([Official installation guide](https://docs.docker.com/engine/install/))
-- `docker-compose` ([Official installation guide](https://docs.docker.com/compose/install/linux/))
+- `docker compose` ([Official installation guide](https://docs.docker.com/compose/install/linux/))
 - `openssl` (Use your distributive repositories or [official website](https://www.openssl.org/) to install)
 
 #### Host & Network
@@ -153,6 +153,7 @@ cp ./dot.env.example ./.env
   | `HYPHA_PUBLIC_PORT=8300` | port for Hypha interface |
 
   - **NOTE: If you are going to use standard HTTP ports (80 for HTTP and 443 for HTTPS), please set the URLs manually without specifying the port (e.g., ':80' or ':443'), as browsers automatically omit the port in such cases. Parameters described above should be set in any case, sorry for the inconvenience**
+  - You should set proper version number for each service. You can check latest versions from [docker hub](https://hub.docker.com/u/mycesys)
   - All other changes in `.env` are optional for all-in-one setup. To learn more follow the guide at: [Technical details / Environment configuration](#environment-configuration)
 
 **For all-in-one installation <HYPHA_PUBLIC_URL> and <HUB_PUBLIC_URL> could be the same but ports should be different.**
@@ -162,11 +163,11 @@ cp ./dot.env.example ./.env
 - To start the system run following scripts:
 
 ```bash
-docker-compose pull
+docker compose pull
 ```
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 - If you are using a self-signed certificate, do not forget to perform the additional steps described in [3. Advanced guide: addtional configuration steps](#additional-steps)
@@ -261,7 +262,7 @@ cp selfsigned/v3.ext ssl/
 #### Install Hypha on several nodes
 
 - You can spread system components on nodes
-- To do it you can use docker-composes from `hypha-installation` to install each component separately
+- To do it you can use docker composes from `hypha-installation` to install each component separately
 - In this case ensure that you properly set services URLs in each `.env` file (in the next version of Hypha this will be not neccessary)
 - We recommend to start with separating `Hub` components because `Hub` is completely independent service
 
@@ -440,11 +441,11 @@ iptables -t nat -A POSTROUTING --source yyy.yyy.yyy.yyy  --destination xxx.xxx.x
 3. To update images and restart system run:
 
 ```bash
-docker-compose pull
+docker compose pull
 ```
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 ```bash
