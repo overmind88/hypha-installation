@@ -96,16 +96,6 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://hub-auth-db:5432/authdb
       - USER_AVATARS_PATH=/server/data/avatars/
       - OAUTH_KEYS_PATH=/oauth/keys/
-      - HUB_AUTH_SECRET=${HUB_AUTH_SECRET}
-      - HUB_AUTH_MAIL_SERVER_HOST=${HUB_AUTH_MAIL_SERVER_HOST}
-      - HUB_AUTH_MAIL_SERVER_POST=${HUB_AUTH_MAIL_SERVER_POST}
-      - HUB_AUTH_MAIL_USERNAME=${HUB_AUTH_MAIL_USERNAME}
-      - HUB_AUTH_MAIL_PASSWORD=${HUB_AUTH_MAIL_PASSWORD}
-      - HUB_AUTH_MAIL_PROTOCOL=${HUB_AUTH_MAIL_PROTOCOL}
-      - HUB_AUTH_MAIL_SMTP_AUTH=${HUB_AUTH_MAIL_SMTP_AUTH}
-      - HUB_AUTH_MAIL_TLS_ENABLE=${HUB_AUTH_MAIL_TLS_ENABLE}
-      - HUB_AUTH_MAIL_SSL_ENABLE=${HUB_AUTH_MAIL_SSL_ENABLE}
-      - HUB_AUTH_MAIL_FROM=${HUB_AUTH_MAIL_FROM}
     depends_on:
       hub-auth-db:
         condition: service_healthy
@@ -155,12 +145,6 @@ services:
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-files-db:5432/fmdb
       - SSH_DEFAULT_KEY_PATH=/ssh/keys/hypha
       - STORAGE_LOCAL_PATH=/server/data
-      - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
-      - SPRING_RABBITMQ_PORT=${RABBITMQ_PORT}
-      - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
-      - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
-      - HYPHA_SECRET=${HYPHA_SECRET}
-      - HUB_AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       hypha-files-db:
         condition: service_healthy
@@ -208,12 +192,6 @@ services:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-resources-db:5432/myc_hypha_rm
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-resources-db:5432/myc_hypha_rm
       - SSH_DEFAULT_KEY_PATH=/ssh/keys/hypha
-      - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
-      - SPRING_RABBITMQ_PORT=${RABBITMQ_PORT}
-      - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
-      - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
-      - HYPHA_SECRET=${HYPHA_SECRET}
-      - HUB_AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       hypha-resources-db:
         condition: service_healthy
@@ -258,12 +236,6 @@ services:
     environment:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-tasks-db:5432/myc_hypha_tm
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-tasks-db:5432/myc_hypha_tm
-      - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
-      - SPRING_RABBITMQ_PORT=${RABBITMQ_PORT}
-      - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
-      - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
-      - HYPHA_SECRET=${HYPHA_SECRET}
-      - HUB_AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       hypha-tasks-db:
         condition: service_healthy
@@ -355,8 +327,6 @@ services:
     environment:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-dashboard-db:5432/myc_hypha_dashboard
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-dashboard-db:5432/myc_hypha_dashboard
-      - HYPHA_SECRET=${HYPHA_SECRET}
-      - HUB_AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       hypha-dashboard-db:
         condition: service_healthy
