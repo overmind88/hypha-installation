@@ -7,7 +7,11 @@ services:
       - "8500:8500"
     volumes:
       - ./consul_data:/consul-data
-    command: "agent -server -bootstrap-expect=1 -data-dir=consul-data -ui -client 0.0.0.0"
+    command: "agent -server -bootstrap-expect=1 -data-dir=consul-data -ui -client 0.0.0.0 -log-level=ERROR"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   vault:
     image: vault:1.13.3
@@ -31,6 +35,11 @@ services:
       interval: 2s
       timeout: 5s
       retries: 20
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+
 
   rabbitmq:
     container_name: "rabbitmq"
@@ -43,6 +52,10 @@ services:
       - '5672:5672'
       # HTTP management UI
       - '15672:15672'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hub-auth-db:
     image: postgres:14.3-alpine
@@ -56,7 +69,7 @@ services:
     volumes:
       - ./pg_auth/data:/var/lib/postgresql/data
     healthcheck:
-      test: "pg_isready -U $${POSTGRES_USER} || pg_isready"
+      test: "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || pg_isready"
       interval: 5s
       timeout: 2s
       retries: 5
@@ -83,21 +96,15 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://hub-auth-db:5432/authdb
       - USER_AVATARS_PATH=/server/data/avatars/
       - OAUTH_KEYS_PATH=/oauth/keys/
-      - HUB_AUTH_SECRET=${HUB_AUTH_SECRET}
-      - HUB_AUTH_MAIL_SERVER_HOST=${HUB_AUTH_MAIL_SERVER_HOST}
-      - HUB_AUTH_MAIL_SERVER_POST=${HUB_AUTH_MAIL_SERVER_POST}
-      - HUB_AUTH_MAIL_USERNAME=${HUB_AUTH_MAIL_USERNAME}
-      - HUB_AUTH_MAIL_PASSWORD=${HUB_AUTH_MAIL_PASSWORD}
-      - HUB_AUTH_MAIL_PROTOCOL=${HUB_AUTH_MAIL_PROTOCOL}
-      - HUB_AUTH_MAIL_SMTP_AUTH=${HUB_AUTH_MAIL_SMTP_AUTH}
-      - HUB_AUTH_MAIL_TLS_ENABLE=${HUB_AUTH_MAIL_TLS_ENABLE}
-      - HUB_AUTH_MAIL_SSL_ENABLE=${HUB_AUTH_MAIL_SSL_ENABLE}
-      - HUB_AUTH_MAIL_FROM=${HUB_AUTH_MAIL_FROM}
     depends_on:
       hub-auth-db:
         condition: service_healthy
       vault:
           condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-files-db:
     image: postgres:14.3-alpine
@@ -111,7 +118,7 @@ services:
     volumes:
       - ./pg_fm/data:/var/lib/postgresql/data
     healthcheck:
-      test: "pg_isready -U $${POSTGRES_USER} || pg_isready"
+      test: "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || pg_isready"
       interval: 5s
       timeout: 2s
       retries: 5
@@ -138,17 +145,15 @@ services:
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-files-db:5432/fmdb
       - SSH_DEFAULT_KEY_PATH=/ssh/keys/hypha
       - STORAGE_LOCAL_PATH=/server/data
-      - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
-      - SPRING_RABBITMQ_PORT=${RABBITMQ_PORT}
-      - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
-      - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
-      - HYPHA_SECRET=${HYPHA_SECRET}
-      - HUB_AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       hypha-files-db:
         condition: service_healthy
       vault:
         condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-resources-db:
     image: postgres:14.3-alpine
@@ -162,7 +167,7 @@ services:
     volumes:
       - ./pg_rm/data:/var/lib/postgresql/data
     healthcheck:
-      test: "pg_isready -U $${POSTGRES_USER} || pg_isready"
+      test: "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || pg_isready"
       interval: 5s
       timeout: 2s
       retries: 5
@@ -187,17 +192,15 @@ services:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-resources-db:5432/myc_hypha_rm
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-resources-db:5432/myc_hypha_rm
       - SSH_DEFAULT_KEY_PATH=/ssh/keys/hypha
-      - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
-      - SPRING_RABBITMQ_PORT=${RABBITMQ_PORT}
-      - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
-      - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
-      - HYPHA_SECRET=${HYPHA_SECRET}
-      - HUB_AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       hypha-resources-db:
         condition: service_healthy
       vault:
         condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-tasks-db:
     image: postgres:14.3-alpine
@@ -211,7 +214,7 @@ services:
     volumes:
       - ./pg_tm/data:/var/lib/postgresql/data
     healthcheck:
-      test: "pg_isready -U $${POSTGRES_USER} || pg_isready"
+      test: "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || pg_isready"
       interval: 5s
       timeout: 2s
       retries: 5
@@ -233,17 +236,15 @@ services:
     environment:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-tasks-db:5432/myc_hypha_tm
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-tasks-db:5432/myc_hypha_tm
-      - SPRING_RABBITMQ_HOST=${RABBITMQ_HOST}
-      - SPRING_RABBITMQ_PORT=${RABBITMQ_PORT}
-      - SPRING_RABBITMQ_USERNAME=${RABBITMQ_DEFAULT_USER}
-      - SPRING_RABBITMQ_PASSWORD=${RABBITMQ_DEFAULT_PASS}
-      - HYPHA_SECRET=${HYPHA_SECRET}
-      - HUB_AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       hypha-tasks-db:
         condition: service_healthy
       vault:
         condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-core-db:
     image: postgres:14.3-alpine
@@ -257,7 +258,7 @@ services:
     volumes:
       - ./pg_core/data:/var/lib/postgresql/data
     healthcheck:
-      test: "pg_isready -U $${POSTGRES_USER} || pg_isready"
+      test: "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || pg_isready"
       interval: 5s
       timeout: 2s
       retries: 5
@@ -287,6 +288,11 @@ services:
         condition: service_healthy
       vault:
         condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+
   hypha-dashboard-db:
     image: postgres:14.3-alpine
     container_name: hypha-dashboard-db
@@ -299,7 +305,7 @@ services:
     volumes:
       - ./pg_dashboard/data:/var/lib/postgresql/data
     healthcheck:
-      test: "pg_isready -U $${POSTGRES_USER} || pg_isready"
+      test: "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || pg_isready"
       interval: 5s
       timeout: 2s
       retries: 5
@@ -321,13 +327,15 @@ services:
     environment:
       - SPRING_R2DBC_URL=r2dbc:postgresql://hypha-dashboard-db:5432/myc_hypha_dashboard
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://hypha-dashboard-db:5432/myc_hypha_dashboard
-      - HYPHA_SECRET=${HYPHA_SECRET}
-      - HUB_AUTH_SECRET=${HUB_AUTH_SECRET}
     depends_on:
       hypha-dashboard-db:
         condition: service_healthy
       vault:
         condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-workflow-db:
     image: postgres:14.3-alpine
@@ -341,7 +349,7 @@ services:
     volumes:
       - ./pg_workflow/data:/var/lib/postgresql/data
     healthcheck:
-      test: "pg_isready -U $${POSTGRES_USER} || pg_isready"
+      test: "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || pg_isready"
       interval: 5s
       timeout: 2s
       retries: 5
@@ -368,6 +376,10 @@ services:
         condition: service_healthy
       vault:
         condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-bff-db:
     image: postgres:14.3-alpine
@@ -381,7 +393,7 @@ services:
     volumes:
       - ./pg_bff/data:/var/lib/postgresql/data
     healthcheck:
-      test: "pg_isready -U $${POSTGRES_USER} || pg_isready"
+      test: "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} || pg_isready"
       interval: 5s
       timeout: 2s
       retries: 5
@@ -408,6 +420,10 @@ services:
         condition: service_healthy
       vault:
         condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-gateway:
     image: "mycesys/hypha-gateway:${HYPHA_GATEWAY_VERSION}"
@@ -428,6 +444,10 @@ services:
         condition: service_healthy
     volumes:
       - ./ssl:/ssl
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-ui:
     container_name: hypha-ui
@@ -441,6 +461,10 @@ services:
     depends_on:
       - hub-auth
       - hypha-gateway
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hub-ui:
     container_name: hub-ui
@@ -453,4 +477,7 @@ services:
     restart: always
     depends_on:
       - hub-auth
-
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"

@@ -4,8 +4,8 @@ services:
     container_name: "rabbitmq"
     image: rabbitmq:3.10.7-management
     environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
+      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME}
+      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
     volumes:
       - ./rabbitmq_data:/var/lib/rabbitmq/mnesia/
     ports:
