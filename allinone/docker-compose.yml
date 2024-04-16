@@ -6,8 +6,8 @@ services:
     ports:
       - "8500:8500"
     volumes:
-      - ./consul_data:/consul-data
-    command: "agent -server -bootstrap-expect=1 -data-dir=consul-data -ui -client 0.0.0.0 -log-level=ERROR"
+      - ./consul_config:/consul_config
+    command: sh /consul_config/start-consul.sh
     logging:
       driver: "json-file"
       options:
@@ -39,7 +39,6 @@ services:
       driver: "json-file"
       options:
         max-size: "100m"
-
 
   rabbitmq:
     container_name: "rabbitmq"
@@ -73,6 +72,10 @@ services:
       interval: 5s
       timeout: 2s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hub-auth:
     image: "mycesys/hub-auth:${HUB_AUTH_VERSION}"
@@ -89,13 +92,15 @@ services:
     volumes:
       - ./oauth/keys:/oauth/keys
       - ./auth/user/avatars:/server/data/avatars
-      - ./ssl:/ssl
+      - ./licenses:/licenses
+      - ${PWD}/ssl:/ssl
     env_file:
       - ./.env
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://hub-auth-db:5432/authdb
       - USER_AVATARS_PATH=/server/data/avatars/
       - OAUTH_KEYS_PATH=/oauth/keys/
+      - LICENSES_PATH=/licenses
     depends_on:
       hub-auth-db:
         condition: service_healthy
@@ -122,6 +127,10 @@ services:
       interval: 5s
       timeout: 2s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-files:
     image: "mycesys/hypha-files:${HYPHA_FILES_VERSION}"
@@ -157,7 +166,7 @@ services:
 
   hypha-resources-db:
     image: postgres:14.3-alpine
-    container_name: rm-db
+    container_name: hypha-resources-db
     ports:
       - "6432:5432"
     environment:
@@ -171,6 +180,10 @@ services:
       interval: 5s
       timeout: 2s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-resources:
     image: "mycesys/hypha-resources:${HYPHA_RESOURCES_VERSION}"
@@ -218,6 +231,10 @@ services:
       interval: 5s
       timeout: 2s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-tasks:
     image: "mycesys/hypha-tasks:${HYPHA_TASKS_VERSION}"
@@ -262,6 +279,10 @@ services:
       interval: 5s
       timeout: 2s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-core:
     image: "mycesys/hypha-core:${HYPHA_CORE_VERSION}"
@@ -309,6 +330,10 @@ services:
       interval: 5s
       timeout: 2s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-dashboard:
     image: "mycesys/hypha-dashboard:${HYPHA_DASHBOARD_VERSION}"
@@ -353,6 +378,10 @@ services:
       interval: 5s
       timeout: 2s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-workflow:
     image: "mycesys/hypha-workflow:${HYPHA_WORKFLOW_VERSION}"
@@ -397,6 +426,10 @@ services:
       interval: 5s
       timeout: 2s
       retries: 5
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
 
   hypha-bff:
     image: "mycesys/hypha-bff:${HYPHA_BFF_VERSION}"
@@ -439,11 +472,11 @@ services:
           memory: ${HYPHA_APP_GW_LIMIT_MAX_RAM}
     env_file:
       - ./.env
+    volumes:
+      - ${PWD}/ssl:/ssl
     depends_on:
       vault:
         condition: service_healthy
-    volumes:
-      - ./ssl:/ssl
     logging:
       driver: "json-file"
       options:
@@ -453,11 +486,15 @@ services:
     container_name: hypha-ui
     image: "mycesys/hypha-ui:${HYPHA_UI_VERSION}"
     ports:
-      - '${HYPHA_PUBLIC_PORT}:8300'
+      - '${HYPHA_PUBLIC_PORT}:443'
     volumes:
-      - ./nginx.hypha_frontend.conf:/etc/nginx/conf.d/hypha.conf
-      - ./ssl:/etc/ssl
+      #- /etc/letsencrypt_shared:/etc/letsencrypt
+      - ${PWD}/ssl_cert.conf:/etc/nginx/ssl_cert.conf
+      - ${PWD}/ssl:/etc/ssl
     restart: always
+    environment:
+      CONSUL_HOST: ${CONSUL_HOST}
+      CONSUL_PORT: ${CONSUL_PORT}
     depends_on:
       - hub-auth
       - hypha-gateway
@@ -470,11 +507,15 @@ services:
     container_name: hub-ui
     image: "mycesys/hub-ui:${HUB_UI_VERSION}"
     ports:
-      - '${HUB_PUBLIC_PORT}:8301'
+      - '${HUB_PUBLIC_PORT}:3001'
     volumes:
-      - ./nginx.hub_frontend.conf:/etc/nginx/conf.d/hub.conf
-      - ./ssl:/etc/ssl
+      #- /etc/letsencrypt_shared:/etc/letsencrypt
+      - ${PWD}/ssl_cert.conf:/etc/nginx/ssl_cert.conf
+      - ${PWD}/ssl:/etc/ssl
     restart: always
+    environment:
+      CONSUL_HOST: ${CONSUL_HOST}
+      CONSUL_PORT: ${CONSUL_PORT}
     depends_on:
       - hub-auth
     logging:

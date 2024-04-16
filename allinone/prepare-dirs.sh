@@ -12,5 +12,4 @@ mkdir -p pg_rm
 mkdir -p pg_tm
 mkdir -p pg_workflow
 mkdir -p rabbitmq_data
-mkdir -p consul_data
 mkdir -p vault_data

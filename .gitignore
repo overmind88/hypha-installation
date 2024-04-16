@@ -1,4 +1,4 @@
-.env
+.env*
 *~*
 pg_*
 files/
@@ -6,9 +6,9 @@ certs/
 oauth/
 .vscode
 ssl/
-vault-data/
-consul-data/
+vault_data/
 rabbitmq_data/
 ssh/
 oauth.key
 .idea/
+*.zip
