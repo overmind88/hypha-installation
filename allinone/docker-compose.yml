@@ -4,12 +4,11 @@
 include:
   # Consul
   - path: ../consul/docker-compose.yml
-    project_directory: ../consul
+    project_directory: ../allinone
 
   # Vault
   - path: ../vault/docker-compose.yml
-    project_directory: ../vault
-    env_file: ../allinone/.env
+    project_directory: ../allinone
 
   # RabbitMQ
   - path: ../rabbitmq/docker-compose.yml
@@ -57,8 +56,4 @@ include:
 
   # Hub UI
   - path: ../hub-ui/docker-compose.yml
-    project_directory: ../allinone
-
-  # Hypha Internal
-  - path: ../hypha-internal/docker-compose.yml
     project_directory: ../allinone
