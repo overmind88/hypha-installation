@@ -515,3 +515,31 @@ If you are using selfsigned certificates:
 ```bash
 ./add-ssl-keys-to-jdk.sh
 ```
+
+#### 2024.1 to 2025.1
+
+**Update version**
+
+1. Download `config-migration_2024.1-2025.1.sh` script from the [repository](https://github.com/mycesys/hypha-installation/tree/2025.1/allinone/)
+2. Run migration script
+- Run script `config-migration_2024.1-2025.1.sh` in `./allinone` directory
+
+```bash
+./config-migration_2024.1-2025.1.sh
+```
+
+3. To update images and restart system run:
+
+```bash
+docker compose pull
+```
+
+```bash
+docker compose up -d --remove-orphans
+```
+
+If you are using selfsigned certificates:
+
+```bash
+./add-ssl-keys-to-jdk.sh
+```
