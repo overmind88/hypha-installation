@@ -30,6 +30,7 @@ Hypha is a SPDM system that allows to manage data and simulations, run computati
 - [2023.1 to 2023.2](#20231-to-20232)
 - [2023.2 to 2023.3](#20232-to-20233)
 - [2023.4 to 2024.1](#20233-to-20241)
+- [2024.1 to 2025.1](#20241-to-20251)
 
 ### 1. Requrements
 
