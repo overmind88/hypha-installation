@@ -5,7 +5,7 @@
 set -e
 
 # Default URL of the installation script on GitHub
-GITHUB_URL="https://github.com/overmind88/hypha-installation/archive/refs/heads/2025.1.zip"
+GITHUB_URL="https://github.com/mycesys/hypha-installation/archive/refs/heads/2025.1.zip"
 
 NEW_VERSION_SOURCES=2025.1_"$(date '+%s')"
 
@@ -115,8 +115,8 @@ echo "Backup environment file: $backupenvfile successfully created"
 
 #### Prepare new environment file
 
-echo "3D_SERVICE_DB_USERNAME=models" >> ${env_file}
-echo "3D_SERVICE_DB_PASSWORD=models" >> ${env_file}
+echo "HYPHA_3D_3D_SERVICE_DB_USERNAME=models" >> ${env_file}
+echo "HYPHA_3D_3D_SERVICE_DB_PASSWORD=models" >> ${env_file}
 echo "STL_SERVICE_BASE_URL=http://3d-service:8080/rest/v1/models" >> ${env_file}
 echo "HYPHA_3D_FREECAD_SERVICE_URL=freecad:8000" >> ${env_file}
 echo "HYPHA_3D_SERVICE_POSTGRES_URL=postgres:5432" >> ${env_file}
@@ -199,8 +199,8 @@ HYPHA_DASHBOARD_DB_PASSWORD
 DISCOVERY_PREFER_IP
 DISCOVERY_IP_ADDRES
 STL_SERVICE_BASE_URL
-3D_SERVICE_DB_USERNAME
-3D_SERVICE_DB_PASSWORD
+HYPHA_3D_3D_SERVICE_DB_USERNAME
+HYPHA_3D_3D_SERVICE_DB_PASSWORD
 HYPHA_3D_FREECAD_SERVICE_URL
 HYPHA_3D_SERVICE_POSTGRES_URL
 HYPHA_3D_SERVICE_SPRING_MAX_FILE_SIZE
