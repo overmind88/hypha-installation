@@ -5,7 +5,7 @@
 
 Hypha is a SPDM system that allows to manage data and simulations, run computational tasks and process the results. First enterprise level system available for teams up to 5 users for free.
 
-- User guide: https://mycesys.com/hypha/2023.3/userguide.pdf
+- User guide: https://mycesys.com/hypha/latest/userguide.pdf
 - Installation guide: https://github.com/mycesys/hypha-installation
 - Docker images: https://hub.docker.com/u/mycesys
 
