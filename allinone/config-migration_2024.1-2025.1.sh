@@ -115,8 +115,8 @@ echo "Backup environment file: $backupenvfile successfully created"
 
 #### Prepare new environment file
 
-echo "HYPHA_3D_3D_SERVICE_DB_USERNAME=models" >> ${env_file}
-echo "HYPHA_3D_3D_SERVICE_DB_PASSWORD=models" >> ${env_file}
+echo "HYPHA_3D_SERVICE_DB_USERNAME=models" >> ${env_file}
+echo "HYPHA_3D_SERVICE_DB_PASSWORD=models" >> ${env_file}
 echo "STL_SERVICE_BASE_URL=http://3d-service:8080/rest/v1/models" >> ${env_file}
 echo "HYPHA_3D_FREECAD_SERVICE_URL=freecad:8000" >> ${env_file}
 echo "HYPHA_3D_SERVICE_POSTGRES_URL=postgres:5432" >> ${env_file}
@@ -199,8 +199,8 @@ HYPHA_DASHBOARD_DB_PASSWORD
 DISCOVERY_PREFER_IP
 DISCOVERY_IP_ADDRES
 STL_SERVICE_BASE_URL
-HYPHA_3D_3D_SERVICE_DB_USERNAME
-HYPHA_3D_3D_SERVICE_DB_PASSWORD
+HYPHA_3D_SERVICE_DB_USERNAME
+HYPHA_3D_SERVICE_DB_PASSWORD
 HYPHA_3D_FREECAD_SERVICE_URL
 HYPHA_3D_SERVICE_POSTGRES_URL
 HYPHA_3D_SERVICE_SPRING_MAX_FILE_SIZE
