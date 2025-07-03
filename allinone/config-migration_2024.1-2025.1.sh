@@ -115,6 +115,7 @@ echo "Backup environment file: $backupenvfile successfully created"
 
 #### Prepare new environment file
 
+
 echo "HYPHA_3D_SERVICE_DB_USERNAME=models" >> ${env_file}
 echo "HYPHA_3D_SERVICE_DB_PASSWORD=models" >> ${env_file}
 echo "STL_SERVICE_BASE_URL=http://3d-service:8080/rest/v1/models" >> ${env_file}
@@ -197,6 +198,7 @@ HYPHA_FILES_MANAGER_DB_PASSWORD
 HYPHA_DASHBOARD_DB_USERNAME
 HYPHA_DASHBOARD_DB_PASSWORD
 DISCOVERY_PREFER_IP
+
 DISCOVERY_IP_ADDRESS
 STL_SERVICE_BASE_URL
 HYPHA_3D_SERVICE_DB_USERNAME
