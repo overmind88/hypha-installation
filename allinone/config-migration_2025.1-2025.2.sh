@@ -95,8 +95,8 @@ echo "Running migration..."
 
 #### Copy new version of required files from new installation scripts
 
-for i in 3d-service hub-auth hub-ui hypha-bff hypha-core hypha-dashboard hypha-files hypha-gateway hypha-resources hypha-tasks hypha-ui hypha-workflow rabbitmq consul vault; do
-  cp -rf "$UNZIP_DIR"/hypha-installation-2025.2/$i/. ../$i
+for i in 3d-service hub-auth hub-ui hypha-backend-dictionary hypha-bff hypha-core hypha-dashboard hypha-files hypha-gateway hypha-resources hypha-tasks hypha-ui hypha-workflow rabbitmq consul vault; do
+  \cp -rf "$UNZIP_DIR"/hypha-installation-2025.2/$i/. ../$i
 done
 
 cp "$UNZIP_DIR"/hypha-installation-2025.2/allinone/prepare-dirs.sh ./
@@ -115,13 +115,6 @@ echo "Backup environment file: $backupenvfile successfully created"
 
 #### Prepare new environment file
 
-# echo "HYPHA_3D_SERVICE_DB_USERNAME=models" >> ${env_file}
-# echo "HYPHA_3D_SERVICE_DB_PASSWORD=models" >> ${env_file}
-# echo "STL_SERVICE_BASE_URL=http://3d-service:8080/rest/v1/models" >> ${env_file}
-# echo "HYPHA_3D_FREECAD_SERVICE_URL=3d-service-freecad:8000" >> ${env_file}
-# echo "HYPHA_3D_SERVICE_POSTGRES_URL=3d-service-db:5432" >> ${env_file}
-# echo "HYPHA_3D_SERVICE_SPRING_MAX_FILE_SIZE=2000MB" >> ${env_file}
-# echo "HYPHA_3D_SERVICE_SPRING_MAX_REQUEST_SIZE=2000MB" >> ${env_file}
 {
   echo "STL_SERVICE_BASE_URL=http://3d-service:8080/rest/v1/models"
   echo "HYPHA_WEB_APP_BRANDING_TITLE=Hypha"
@@ -134,7 +127,7 @@ echo "Backup environment file: $backupenvfile successfully created"
 
 } >> ${env_file}
 
-sed -i s/dev/prod
+sed -i s/dev/prod/ ${env_file}
 
 echo "Migration completed. Checking generated environment file..."
 
