@@ -1,7 +1,7 @@
 services:
-  hypha-core:
+  hypha-backend-dictionary:
     image: "mycesys/hypha-backend-dictionary:${HYPHA_BACKEND_DICTIONARY_VERSION}"
-    container_name: hypha-core
+    container_name: hypha-backend-dictionary
     restart: on-failure
     ports:
       - "8090:8090"
@@ -12,15 +12,6 @@ services:
       retries: 10
     env_file:
       - ./.env
-    depends_on:
-      hub-auth:
-        condition: service_healthy
-      hypha-gateway:
-        condition: service_healthy
-      hypha-bff:
-        condition: service_healthy
-      vault:
-        condition: service_healthy
     logging:
       driver: "json-file"
       options:
