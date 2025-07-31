@@ -130,6 +130,8 @@ echo "Backup environment file: $backupenvfile successfully created"
   echo "GLOBAL_WEB_APP_BRANDING_TITLE=Mycesys"
   echo "USERGUIDE_URL=https://mycesys.com/hypha/latest/userguide.pdf"
   echo "DEFAULT_SYSTEM_LANGUAGE=en"
+  echo "HYPHA_BACKEND_DICTIONARY_VERSION=2025.2.19"
+
 } >> ${env_file}
 
 sed -i s/dev/prod
@@ -162,6 +164,7 @@ HYPHA_TASKS_VERSION
 HYPHA_DASHBOARD_VERSION
 HYPHA_UI_VERSION
 HUB_UI_VERSION
+HYPHA_BACKEND_DICTIONARY_VERSION
 HUB_AUTH_MAIL_SERVER_HOST
 HUB_AUTH_MAIL_SERVER_POST
 HUB_AUTH_MAIL_PROTOCOL

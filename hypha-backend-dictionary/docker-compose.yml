@@ -1,0 +1,27 @@
+services:
+  hypha-core:
+    image: "mycesys/hypha-backend-dictionary:${HYPHA_BACKEND_DICTIONARY_VERSION}"
+    container_name: hypha-core
+    restart: on-failure
+    ports:
+      - "8090:8090"
+    healthcheck:
+      test: curl -s http://localhost:8090/actuator/health| grep UP || exit 1
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    env_file:
+      - ./.env
+    depends_on:
+      hub-auth:
+        condition: service_healthy
+      hypha-gateway:
+        condition: service_healthy
+      hypha-bff:
+        condition: service_healthy
+      vault:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
