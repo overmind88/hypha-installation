@@ -5,7 +5,7 @@
 set -e
 
 # Default URL of the installation script on GitHub
-GITHUB_URL="https://github.com/mycesys/hypha-installation/archive/refs/heads/2025.2.zip"
+GITHUB_URL="https://github.com/overmind88/hypha-installation/archive/refs/heads/2025.2.zip"
 
 NEW_VERSION_SOURCES=2025.2_"$(date '+%s')"
 
@@ -65,7 +65,7 @@ while [ "$#" -gt 0 ]; do
 done
 
 # Check is environment file exists
-if [ -f "$env_file" ]; then
+if [ -f "${env_file}" ]; then
     echo "$env_file will be used as source of previous installation parameters"
 else
     echo "Could not find environment file by path $env_file"
@@ -107,8 +107,8 @@ cp -r "$UNZIP_DIR"/hypha-installation-2025.2/allinone/vault_config ./
 
 #### Creating a backup for existing .env file
 
-backupenvfile="$env_file".2025.1-"$(date '+%s')".backup
-cp "$env_file" "$backupenvfile"
+backupenvfile="${env_file}".2025.1-"$(date '+%s')".backup
+cp "${env_file}" "$backupenvfile"
 echo "Backup environment file: $backupenvfile successfully created"
 
 #### Prepare new folders
@@ -239,7 +239,7 @@ echo "HYPHA_3D_SERVICE_POSTGRES_URL=3d-service-db:5432"
 echo "HYPHA_3D_SERVICE_SPRING_MAX_FILE_SIZE=2000MB"
 echo "HYPHA_3D_SERVICE_SPRING_MAX_REQUEST_SIZE=2000MB"
 
-} > "$env_file"
+} > "${env_file}"
 
 echo "Migration completed. Checking generated environment file..."
 
@@ -331,7 +331,7 @@ GLOBAL_WEB_APP_BRANDING_TITLE
 USERGUIDE_URL
 DEFAULT_SYSTEM_LANGUAGE'
 
-. "$env_file"
+. "${env_file}"
 
 for key in $list_of_envs ; do
     if [[ -z "${!key}" ]]; then
@@ -347,10 +347,10 @@ for key in $list_of_envs ; do
 done
 
 if [ "$HYPHA_PUBLIC_PORT" = "443" ] ; then
-  sed -i s/HYPHA_WEB_APP_BASE_URL=.*/HYPHA_WEB_APP_BASE_URL=https\:\\/\\/\$\{HYPHA_PUBLIC_URL\}/ "$env_file"
+  sed -i s/HYPHA_WEB_APP_BASE_URL=.*/HYPHA_WEB_APP_BASE_URL=https\:\\/\\/\$\{HYPHA_PUBLIC_URL\}/ "${env_file}"
 fi
 if [ "$HUB_PUBLIC_PORT" = "443" ] ; then
-  sed -i s/HYPHA_WEB_APP_BASE_URL=.*/HYPHA_WEB_APP_BASE_URL=https\:\\/\\/\$\{HYPHA_PUBLIC_URL\}/ "$env_file"
+  sed -i s/HYPHA_WEB_APP_BASE_URL=.*/HYPHA_WEB_APP_BASE_URL=https\:\\/\\/\$\{HYPHA_PUBLIC_URL\}/ "${env_file}"
 fi
 
 echo "Please check updated environment file before start. File location: $env_file"
